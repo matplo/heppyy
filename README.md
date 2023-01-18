@@ -8,6 +8,7 @@ HEP soft with python using cppyy
 conda create -n heppyy
 conda activate heppyy
 conda install python
+conda install -c conda-forge compilers
 # install cppyy supporting c++11 - for fastjet
 STDCXX=11 python -m pip install cppyy
 # some more packages
