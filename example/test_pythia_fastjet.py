@@ -8,7 +8,7 @@ import argparse
 import os
 import numpy as np
 
-prefix = os.path.expandvars('$HOME/softbuild')
+prefix = os.path.expandvars('$HOME/yasp')
 cppyy.add_include_path(f"{prefix}/include")
 cppyy.add_library_path(f"{prefix}/lib")
 
