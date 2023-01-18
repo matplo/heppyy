@@ -12,10 +12,15 @@ conda install -c conda-forge compilers
 # install cppyy supporting c++11 - for fastjet
 STDCXX=11 python -m pip install cppyy
 # some more packages
-conda install -c conda-forge root hepmc2 hepmc3
-# you can install pythia8 also from conda but it will be pybind11 not cppyy
-# so use yasp to install pythia - heppyy is yasp aware...
+conda install -c conda-forge root hepmc2 hepmc3 lhapdf6
 conda install numpy tqdm ...
+# you can install pythia8 also from conda but it will be pybind11 not cppyy we so use yasp (https://github.com/matplo/yasp) to install pythia - heppyy is yasp aware...
+git clone https://github.com/matplo/yasp
+# we will install those locally here ./external but we could also point to the conda dir or anywhere else in the system
+./yasp/yasp.py --defaults --prefix $PWD/external
+./yasp/yasp.py --install fastjet
+./yasp/yasp.py --install fjcontrib
+./yasp/yasp.py --install pythia8
 ```
 
 # test
