@@ -7,8 +7,10 @@ import tqdm
 import argparse
 import os
 import numpy as np
-
-prefix = os.path.expandvars('$HOME/yasp')
+import sys
+sys.path.append('./yasp')
+from yasp import yasp_feature as yf
+prefix = yf('prefix')
 cppyy.add_include_path(f"{prefix}/include")
 cppyy.add_library_path(f"{prefix}/lib")
 
@@ -45,7 +47,7 @@ def main():
 	pyconf.add_standard_pythia_args(parser)
 	parser.add_argument('--ignore-mycfg', help="ignore some settings hardcoded here", default=False, action='store_true')
 	args = parser.parse_args()
- 
+
 	pythia = Pythia8.Pythia()
 
 	fj.ClusterSequence.print_banner()
