@@ -70,8 +70,8 @@ def main():
 	if not pythia:
 		print("[e] pythia initialization failed.")
 		return
-	if args.nev < 100:
-		args.nev = 100
+	if args.nev < 10:
+		args.nev = 10
 	for i in tqdm.tqdm(range(args.nev)):
 		if not pythia.next():
 			continue
