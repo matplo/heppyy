@@ -3,7 +3,24 @@ HEP soft with python using cppyy
 
 # recommendation
 
-- use conda
+## use pipenv
+
+```
+current_python_version=$(python3 -c "import sys; print('.'.join([str(s) for s in sys.version_info[:3]]));")
+pipenv --python ${current_python_version}
+pipenv install pyyaml 
+pipenv shell
+git clone https://github.com/matplo/yasp
+./yasp/yasp.py --configure --prefix $PWD/external --workdir $PWD/build
+./yasp/yasp.py --install fastjet fjcontrib pythia8 cppyy
+# next one is heavy...
+./yasp/yasp.py --install root
+...
+
+```
+
+
+## try conda
 ```
 conda create -n heppyy
 conda activate heppyy
