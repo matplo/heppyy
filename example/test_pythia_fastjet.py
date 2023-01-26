@@ -8,12 +8,26 @@ import argparse
 import os
 import numpy as np
 import sys
-sys.path.append('./yasp')
-from yasp import yasp_feature as yf
-prefix = yf('prefix')
-cppyy.add_include_path(f"{prefix}/include")
-cppyy.add_library_path(f"{prefix}/lib")
+import yasp
 
+def cppyy_add_include_paths_files(files=[], *packages):
+	dirs = yasp.yasp_find_files_dirnames_in_packages(files, packages)
+	for d in dirs:	
+		print(f'[i] adding include path {d}')
+		cppyy.add_include_path(f"{d}")
+
+def cppyy_add_paths(*packages):
+	for pfix in yasp.features('prefix', *packages):
+		_include_path = os.path.join(pfix, 'include')
+		_lib_path = os.path.join(pfix, 'lib')
+		_lib64_path = os.path.join(pfix, 'lib')
+		if os.path.isdir(_include_path):
+			cppyy.add_include_path(_include_path)
+		if os.path.isdir(_lib_path):
+			cppyy.add_library_path(_lib_path)
+		if os.path.isdir(_lib64_path):
+			cppyy.add_library_path(_lib64_path)
+ 
 files = [
     "fastjet/PseudoJet.hh",
     "fastjet/JetDefinition.hh",
@@ -24,6 +38,8 @@ files = [
 
     "Pythia8/Pythia.h",
     "Pythia8/Event.h"]
+
+cppyy_add_paths('fastjet', 'pythia8')
 
 for fn in files:
     cppyy.include(fn)
