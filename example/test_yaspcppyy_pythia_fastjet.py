@@ -43,8 +43,9 @@ def main():
 	parser = argparse.ArgumentParser(description='pythia8 fastjet on the fly', prog=os.path.basename(__file__))
 	pyconf.add_standard_pythia_args(parser)
 	parser.add_argument('--ignore-mycfg', help="ignore some settings hardcoded here", default=False, action='store_true')
+	parser.add_argument('-v', '--verbose', help="be verbose", default=False, action='store_true')
 	args = parser.parse_args()
-
+	
 	pythia = Pythia8.Pythia()
 
 	fj.ClusterSequence.print_banner()
@@ -77,12 +78,14 @@ def main():
 		jets = jet_selector(jet_def(parts))
 		for j in jets:
 			lunds = lund_gen.result(j)
-			print(f'jet pT={j.perp()}')
-			for i, l in enumerate(lunds):
-				print('- L {} pT={:5.2f} eta={:5.2f}'.format(i, l.pair().perp(), l.pair().eta()))
-				print('  Deltas={}'.format(l.Delta()))
-				print('  kts={}'.format(l.kt()))
-				print()
+			if args.verbose:
+				print(f'jet pT={j.perp()}')
+			if args.verbose:
+				for i, l in enumerate(lunds):
+					print('- L {} pT={:5.2f} eta={:5.2f}'.format(i, l.pair().perp(), l.pair().eta()))
+					print('  Deltas={}'.format(l.Delta()))
+					print('  kts={}'.format(l.kt()))
+					print()
 
 
 	pythia.stat()
