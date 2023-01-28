@@ -1,34 +1,19 @@
 #!/usr/bin/env python3
 
 from __future__ import print_function
-import cppyy
-
 import tqdm
 import argparse
 import os
 import numpy as np
 import sys
 import yasp
+import cppyy
 
-def cppyy_add_include_paths_files(files=[], *packages):
-	dirs = yasp.yasp_find_files_dirnames_in_packages(files, packages)
-	for d in dirs:	
-		print(f'[i] adding include path {d}')
-		cppyy.add_include_path(f"{d}")
+import sys
+_heppyy_dir = os.path.join(os.path.dirname(__file__), '..')
+sys.path.append(_heppyy_dir)
 
-def cppyy_add_paths(*packages):
-	for pfix in yasp.features('prefix', *packages):
-		_include_path = os.path.join(pfix, 'include')
-		_lib_path = os.path.join(pfix, 'lib')
-		_lib64_path = os.path.join(pfix, 'lib')
-		if os.path.isdir(_include_path):
-			cppyy.add_include_path(_include_path)
-		if os.path.isdir(_lib_path):
-			cppyy.add_library_path(_lib_path)
-		if os.path.isdir(_lib64_path):
-			cppyy.add_library_path(_lib64_path)
- 
-files = [
+headers = [
     "fastjet/PseudoJet.hh",
     "fastjet/JetDefinition.hh",
     "fastjet/ClusterSequence.hh",
@@ -39,28 +24,20 @@ files = [
     "Pythia8/Pythia.h",
     "Pythia8/Event.h"]
 
-cppyy_add_paths('fastjet', 'pythia8')
+packs = ['fastjet', 'pythia8']
+libs = ['fastjet', 'pythia8', 'LundPlane']
 
-cppyy.load_library("fastjet")
-cppyy.load_library("pythia8")
-cppyy.load_library("LundPlane")
-
-for fn in files:
-    cppyy.include(fn)
-
-print(cppyy.gbl.__dict__)
+from yasp.cppyyhelper import YaspCppyyHelper
+ycppyy = YaspCppyyHelper().load(packs, libs, headers)
+print(ycppyy)
 
 from cppyy.gbl import fastjet as fj
 from cppyy.gbl import Pythia8
+from cppyy.gbl.std import vector
 
-print(cppyy.gbl.__dict__)
-
-import sys
-_heppyy_dir = os.path.join(os.path.dirname(__file__), '..')
-sys.path.append(_heppyy_dir)
 from util import configuration as pyconf
 
-from cppyy.gbl.std import vector
+print(cppyy.gbl.__dict__)
 
 def main():
 	parser = argparse.ArgumentParser(description='pythia8 fastjet on the fly', prog=os.path.basename(__file__))
