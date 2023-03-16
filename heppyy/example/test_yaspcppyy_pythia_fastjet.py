@@ -10,8 +10,8 @@ import yasp
 import cppyy
 
 import sys
-_heppyy_dir = os.path.join(os.path.dirname(__file__), '..')
-sys.path.append(_heppyy_dir)
+#_heppyy_dir = os.path.join(os.path.dirname(__file__), '..')
+#sys.path.append(_heppyy_dir)
 
 headers = [
     "fastjet/PseudoJet.hh",
@@ -35,7 +35,8 @@ from cppyy.gbl import fastjet as fj
 from cppyy.gbl import Pythia8
 from cppyy.gbl.std import vector
 
-from util import configuration as pyconf
+print(sys.path)
+from heppyy.pythia_util import configuration as pyconf
 
 print(cppyy.gbl.__dict__)
 
@@ -45,7 +46,7 @@ def main():
 	parser.add_argument('--ignore-mycfg', help="ignore some settings hardcoded here", default=False, action='store_true')
 	parser.add_argument('-v', '--verbose', help="be verbose", default=False, action='store_true')
 	args = parser.parse_args()
-	
+
 	pythia = Pythia8.Pythia()
 
 	fj.ClusterSequence.print_banner()

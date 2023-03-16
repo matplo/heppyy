@@ -6,6 +6,14 @@ import yasp
 # import json - newer modules can output json with module list -j
 import os
 
+# there is a different way of doing this
+# process files with cppyy-generator -> json file
+# $ cppyy-generator <output_json_file> <header_file>
+# find the object vtable in an .so with
+# $nm <solib> --demangle --defined-only | grep vtable
+#
+# of just provide a "dictionary" -> class to lib to load OR header to lib to load
+
 def get_list_of_modules():
 	loaded = None
 	y = yasp.dry_yasp_from_str()
@@ -50,7 +58,7 @@ def main():
 	gos = figure_out_package_from_filename(fname)
 	if gos is None:
 		print(f'[e] not found {fname}')
-		return 
+		return
 	_dirs_to_include = []
 	_dirs_to_path = []
 	_libs_to_load = []

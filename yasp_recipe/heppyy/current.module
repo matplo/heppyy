@@ -1,0 +1,9 @@
+#%Module
+
+prereq yasp
+
+setenv HEPPYY_DIR {{yasp_dir}}
+setenv HEPPYY_PREFIX {{prefix}}
+prepend-path PATH {{prefix}}/bin
+prepend-path PYTHONPATH {{prefix}}/lib
+set-alias heppyy_cd "cd {{yasp.heppyy_dir}}"
