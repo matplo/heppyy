@@ -3,20 +3,24 @@ HEP soft with python using cppyy
 
 # recommendation
 
-## use pipenv
+## use yasp with virtualenv
 
 ```
-current_python_version=$(python3 -c "import sys; print('.'.join([str(s) for s in sys.version_info[:3]]));")
-pipenv --python ${current_python_version}
-pipenv install pyyaml 
-pipenv shell
 git clone https://github.com/matplo/yasp
-./yasp/yasp.py --configure --prefix $PWD/external --workdir $PWD/build
-./yasp/yasp.py --install fastjet fjcontrib pythia8 cppyy
-# next one is heavy...
-./yasp/yasp.py --install root
-...
+cd yasp
+./yaspenv.sh
+./yasp.py -i yasp -m
+module load yasp
+yasp --install jetty -m
+./install_with_yasp.sh
+```
 
+then one can do
+
+```
+module load heppyy
+python -m pip install tqdm
+./heppyy/example/test_yaspcppyy_pythia_fastjet.py
 ```
 
 
