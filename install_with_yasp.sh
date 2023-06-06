@@ -21,5 +21,6 @@ if [ -z "${yasp_exec}" ]; then
     echo "[e] please use yasp at https://github.com/matplo/yasp"
 else
     echo "[i] using yasp at ${yasp_exec}"
-    ${yasp_exec} --recipe-dir ${THISD}/yasp_recipe -r heppyy -m
+    ${yasp_exec} --add-recipe-dir ${THISD}/yasp_recipe --configure 
+    ${yasp_exec} -r heppyy -m $@
 fi

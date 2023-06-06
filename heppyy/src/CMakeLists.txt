@@ -1,0 +1,26 @@
+if (FASTJET_FOUND)
+  add_subdirectory(eec)
+else(FASTJET_FOUND)
+  message(SEND_ERROR "The tools will not work without FASTJET")
+endif(FASTJET_FOUND)
+
+## if (PYTHIA8_FOUND)
+## 
+##   if (HEPMC_FOUND)
+##     add_subdirectory(pythiaext)
+##     add_subdirectory(hepmc2wrap)
+##   else(HEPMC_FOUND)
+##     message(WARNING "${Yellow}Some tools will not be compiled w/o HEPMC ver 2.x...${ColourReset}")
+##   endif(HEPMC_FOUND)
+## 
+##   if (FASTJET_FOUND)
+##     add_subdirectory(pythiafjext)
+##   endif(FASTJET_FOUND)
+## else(PYTHIA8_FOUND)
+##   message(WARNING "${Yellow}Pythia8 missing - some of the tools will not be compiled.${ColourReset}")
+## endif(PYTHIA8_FOUND)
+## 
+## if (HEPMC3_FOUND)
+##   add_subdirectory(hepmc3)
+##   add_subdirectory(pythiahepmc3)
+## endif(HEPMC3_FOUND)
