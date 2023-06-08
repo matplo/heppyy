@@ -2,7 +2,9 @@
 
 prereq yasp
 
-setenv HEPPYY_DIR {{yasp_dir}}
+# setenv HEPPYY_DIR {{yasp_dir}}
+setenv HEPPYY_DIR {{prefix}}
+setenv HEPPYY_SRC {{yasp.heppy_dir}}
 setenv HEPPYY_PREFIX {{prefix}}
 prepend-path PATH {{prefix}}/bin
 prepend-path LD_LIBRARY_PATH {{prefix}}/lib
