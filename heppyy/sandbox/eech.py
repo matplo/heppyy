@@ -6,15 +6,16 @@ import array
 
 headers = [
     "fastjet/PseudoJet.hh",     
-	"eec/ecorrel.hh",
+	"eec/ecorrel.hh"
 	]
 
 packs = ['fastjet', 'heppyy']
 libs = ['fastjet', 'heppyy_eec']
 
 from yasp.cppyyhelper import YaspCppyyHelper
-ycppyy = YaspCppyyHelper().load(packs, libs, headers)
+ycppyy = YaspCppyyHelper()
 print(ycppyy)
+YaspCppyyHelper().load(packs, libs, headers)
 
 from cppyy.gbl import fastjet as fj
 from cppyy.gbl.std import vector
