@@ -58,7 +58,7 @@ print(cppyy.gbl.__dict__)
 import sys
 _heppyy_dir = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(_heppyy_dir)
-from util import configuration as pyconf
+from pythia_util import configuration as pyconf
 
 from cppyy.gbl.std import vector
 
