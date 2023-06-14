@@ -1,5 +1,18 @@
 #!/bin/bash
 
+function abspath()
+{
+  case "${1}" in
+    [./]*)
+    echo "$(cd ${1%/*}; pwd)/${1##*/}"
+    ;;
+    *)
+    echo "${PWD}/${1}"
+    ;;
+  esac
+}
+export -f abspath
+
 # echo "This is only doing symlinks to yasp.."
 
 echo "[i] Recipe dir is: {{yasp.recipe_dir}}"
