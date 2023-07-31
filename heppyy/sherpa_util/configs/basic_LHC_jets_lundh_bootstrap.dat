@@ -1,6 +1,14 @@
+(defaults)
+{
+min_jet_pt=20.
+n_events=1k
+eta_max=1.
+R=0.4
+}(defaults)
+
 (run){
-  EVENT_OUTPUT=HepMC3_GenEvent[test_sherpa.hepmc];
-  EVENTS 10k; 
+  EVENT_OUTPUT=HepMC3_GenEvent[sherpa_LHC_jets_{{min_jet_pt}}_lundh.hepmc];
+  EVENTS {{n_events}}; 
   BEAM_1 2212; BEAM_ENERGY_1 3500;
   BEAM_2 2212; BEAM_ENERGY_2 3500;
 
@@ -21,7 +29,7 @@
 }(processes)
 
 (selector){
-  FastjetFinder  antikt 1  20  0.0  0.4 0.75 1.0
+  FastjetFinder antikt 1 {{min_jet_pt}} 0.0 {{R}} 0.75 {{eta_max}}
   ## FastjetFinder: Algorithm: antikt N: 1 Radius: 0.4 MinPt: 20.0 EtaMax: 1
 }(selector)
 

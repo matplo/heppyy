@@ -4,11 +4,12 @@ prereq yasp
 
 # setenv HEPPYY_DIR {{yasp_dir}}
 setenv HEPPYY_DIR {{prefix}}
-setenv HEPPYY_SRC {{yasp.heppy_dir}}
+setenv HEPPYY_SRC {{yasp.heppyy_dir}}
 setenv HEPPYY_PREFIX {{prefix}}
+setenv HEPPYY_PYTHON_LIB {{prefix}}/lib
 prepend-path PATH {{prefix}}/bin
 prepend-path LD_LIBRARY_PATH {{prefix}}/lib
 prepend-path DYLD_LIBRARY_PATH {{prefix}}/lib
 prepend-path PYTHONPATH {{prefix}}/lib
-prepend-path PYTHONPATH {{prefix}}/lib
+prepend-path PYTHONPATH {{prefix}}/lib/{{python_site_packages_subpath}}
 set-alias heppyy_cd "cd {{yasp.heppyy_dir}}"

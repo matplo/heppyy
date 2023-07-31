@@ -34,8 +34,7 @@ packs = ['fastjet', 'pythia8', 'heppyy']
 libs = ['fastjet', 'pythia8', 'LundPlane', 'EnergyCorrelator', 'heppyy_eec']
 
 from yasp.cppyyhelper import YaspCppyyHelper
-ycppyy = YaspCppyyHelper().load(packs, libs, headers)
-print(ycppyy)
+YaspCppyyHelper().load(packs, libs, headers)
 
 from cppyy.gbl import fastjet as fj
 from cppyy.gbl import Pythia8

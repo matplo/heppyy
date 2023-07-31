@@ -40,6 +40,7 @@ class EEChistograms(yasp.GenericObject):
 		self.histograms = {}
 		self.tn = ROOT.TNtuple('tn', 'tneec', 'n:ptpartcut:RL:w:jetpt')
 		self.tnjet = ROOT.TNtuple('tnjet', 'tnjet', 'pt:eta:phi:nc')
+		self.tnjetFF = ROOT.TNtuple('tnjetFF', 'tnjetFF', 'pt:eta:phi:nc:z:zphi:zeta:ptcut')
 		self.nbins = int(18.)
 		self.lbins = logbins(1.e-3, 1., self.nbins)
 
@@ -67,6 +68,7 @@ class EEChistograms(yasp.GenericObject):
 	# scale is the jet pt
 	def fill_jet(self, j, parts, scale, pt_cuts=[0, 1.]):
 		self.tnjet.Fill(j.perp(), j.eta(), j.phi(), len(j.constituents()))
+		_ = [self.tnjetFF.Fill(j.perp(), j.eta(), j.phi(), len(j.constituents()), _p.perp()/j.perp(), _p.phi(), _p.eta(), _p.perp()) for _p in j.constituents()]
 		for pt_cut in pt_cuts:
 			_parts = vector[fj.PseudoJet]()
 			_ = [_parts.push_back(p) for p in parts if p.perp() > pt_cut]
