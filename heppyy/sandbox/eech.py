@@ -4,36 +4,23 @@ import numpy as np
 import array
 
 
-headers = [
-    "fastjet/PseudoJet.hh",     
-	"eec/ecorrel.hh"
-	]
-
-packs = ['fastjet', 'heppyy']
-libs = ['fastjet', 'heppyy_eec']
-
-from yasp.cppyyhelper import YaspCppyyHelper
-ycppyy = YaspCppyyHelper()
-print(ycppyy)
-YaspCppyyHelper().load(packs, libs, headers)
+import heppyy.util.fastjet_cppyy
+import heppyy.util.heppyy_cppyy
 
 from cppyy.gbl import fastjet as fj
 from cppyy.gbl.std import vector
 from cppyy.gbl import EnergyCorrelators
 
-
-def logbins(xmin, xmax, nbins):
-        lspace = np.logspace(np.log10(xmin), np.log10(xmax), nbins+1)
-        arr = array.array('f', lspace)
-        return arr
-
+from heppyy.util.mputils import logbins
 
 class EEChistograms(yasp.GenericObject):
 	def __init__(self, **kwargs):
 		super(EEChistograms, self).__init__(**kwargs)
 		if self.args:
 			self.configure_from_dict(self.args.__dict__)
-		self.verbose = self.debug        
+		self.verbose = self.debug
+		if self.output_fname:
+			self.output = self.output_fname
 		self.fout = ROOT.TFile(self.output, 'recreate')
 		self.fout.cd()
 
@@ -60,6 +47,7 @@ class EEChistograms(yasp.GenericObject):
 			self.histograms[ptcut] = []
 			for i in range(self.ncorrel - 1):
 				hname = 'hec_{}_ptcut_{}'.format(i+2, ptcut)
+				self.fout.cd()
 				h = ROOT.TH1F(hname, hname, self.nbins, self.lbins)
 				self.histograms[ptcut].append(h)
 
