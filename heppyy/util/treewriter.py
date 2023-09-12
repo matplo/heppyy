@@ -78,6 +78,7 @@ class RTreeWriter(yasp.GenericObject):
 				r = [self.fill_branch('{}_{}'.format(bname, i), x) for i,x in enumerate(value)]
 			else:
 				r = [self.fill_branch(bname, x) for x in value]
+				# print('called this for ')
 			return
 		if dict == type(value):
 			r = [self.fill_branch('{}_{}'.format(bname, i), x) for i, x in value.items()]
