@@ -42,7 +42,7 @@ def draw_jet_graph(G, title='a jet'):
         x=node_x, y=node_y, z=node_z,
         mode='markers',
         marker=dict(
-            showscale=True,
+            showscale=False,
             colorscale='Viridis',
             size=node_sizes,
             # colorbar=dict(
