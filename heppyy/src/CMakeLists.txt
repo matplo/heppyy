@@ -1,5 +1,6 @@
 if (FASTJET_FOUND)
   add_subdirectory(eec)
+  add_subdirectory(fjutil)
 else(FASTJET_FOUND)
   message(SEND_ERROR "The tools will not work without FASTJET")
 endif(FASTJET_FOUND)
