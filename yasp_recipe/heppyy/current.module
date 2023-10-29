@@ -5,6 +5,7 @@ prereq yasp
 # setenv HEPPYY_DIR {{yasp_dir}}
 setenv HEPPYY_DIR {{prefix}}
 setenv HEPPYY_SRC {{yasp.heppyy_dir}}
+setenv HEPPYY_DEV {{yasp.heppyy_dir}}
 setenv HEPPYY_PREFIX {{prefix}}
 setenv HEPPYY_PYTHON_LIB {{prefix}}/lib
 prepend-path PATH {{prefix}}/bin
