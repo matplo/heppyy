@@ -26,8 +26,7 @@ endif(NOT FASTJET_FOUND)
 find_package(LHAPDF6 QUIET)
 
 find_package(HepMC QUIET COMPONENTS HepMC)
-
-find_package(HepMC3 QUIET COMPONENTS HepMC)
+find_package(HepMC3 QUIET COMPONENTS HepMC3)
 if (HEPMC3_FOUND)
   if (${HEPMC3_VERSION_MINOR} GREATER "0")
     # message( STATUS "HEPMC3 minor version ${HEPMC3_VERSION_MINOR} > 0 - adding HEPMC3 definition")

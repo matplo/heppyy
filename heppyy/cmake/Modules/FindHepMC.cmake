@@ -8,12 +8,12 @@
 #  HEPMC_LIBRARIES (not cached)
 #  HEPMC_LIBRARY_DIRS (not cached)
 
-if (NOT HEPMC_DIR)
+if (NOT HEPMC2_DIR)
   set(HEPMC2_DIR ${CMAKE_HEPPY_DIR}/external/hepmc2/hepmc2-current)
   message(STATUS "Setting HEPMC2_DIR to ${HEPMC2_DIR}")
-endif(NOT HEPMC_DIR)
+endif(NOT HEPMC2_DIR)
 
-find_path(HEPMC_INCLUDE_DIR HepMC/GenEvent.h HINTS $ENV{HEPMC_DIR}/include $ENV{HEPMC2_DIR}/include ${HEPMC2_DIR}/include )
+find_path(HEPMC_INCLUDE_DIR HepMC/GenEvent.h HINTS $ENV{HEPMC2_DIR}/include $ENV{HEPMC2_DIR}/include ${HEPMC2_DIR}/include)
 set(HEPMC_INCLUDE_DIRS ${HEPMC_INCLUDE_DIR})
 get_filename_component(HEPMC_DIR ${HEPMC_INCLUDE_DIR} DIRECTORY)
 
@@ -21,14 +21,14 @@ if(NOT HEPMC_FIND_COMPONENTS)
   set(HEPMC_FIND_COMPONENTS HepMC)
 endif()
 foreach(component ${HEPMC_FIND_COMPONENTS})
-  find_library(HEPMC_${component}_LIBRARY NAMES HepMC${component} ${component} HINTS $ENV{HEPMC_DIR}/lib $ENV{HEPMC2_DIR}/lib ${HEPMC2_DIR}/lib)
+  find_library(HEPMC_${component}_LIBRARY NAMES HepMC${component} ${component} HINTS $ENV{HEPMC_DIR}/lib $ENV{HEPMC_DIR}/lib ${HEPMC_DIR}/lib)
   list(APPEND HEPMC_LIBRARIES ${HEPMC_${component}_LIBRARY})
   get_filename_component(_comp_dir ${HEPMC_${component}_LIBRARY} PATH)
   list(APPEND HEPMC_LIBRARY_DIRS ${_comp_dir})
 
   set(HEPMC_LIB_DIR ${HEPMC_LIBRARY_DIRS})
 
-  find_library(COMP NAMES ${component} HINTS $ENV{HEPMC_DIR}/lib $ENV{HEPMC2_DIR}/lib ${HEPMC2_DIR}/lib)
+  find_library(COMP NAMES ${component} HINTS $ENV{HEPMC_DIR}/lib $ENV{HEPMC_DIR}/lib ${HEPMC_DIR}/lib)
   if (COMP)
   	list(APPEND HEPMC_LINKS ${component})
   endif(COMP)
