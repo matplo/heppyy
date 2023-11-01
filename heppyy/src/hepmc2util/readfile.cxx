@@ -51,7 +51,7 @@ namespace HeppyyHepMCUtil
 
 	ReadHepMCFile::~ReadHepMCFile()
 	{
-
+		;
 	}
 
 	HepMC::GenCrossSection* ReadHepMCFile::GetCrossSecion()
@@ -121,7 +121,10 @@ namespace HeppyyHepMCUtil
 	{
 		fParticles.clear();
 		if (!fEvent)
+		{
 			cerr << "No event - unable to read particles..." << endl;
+			return fParticles;
+		}
 		for ( HepMC::GenEvent::particle_iterator p = fEvent->particles_begin();
 			p != fEvent->particles_end(); ++p )
 		{
@@ -136,6 +139,36 @@ namespace HeppyyHepMCUtil
 			else
 			{
 				fParticles.push_back(pmc);
+			}
+		}
+		return fParticles;
+	}
+
+	std::vector<HepMC::GenParticle*> ReadHepMCFile::HepMCParticlesWithStatus(int status)
+	{
+		fParticles.clear();
+		if (!fEvent)
+		{
+			cerr << "No event - unable to read particles..." << endl;
+			return fParticles;
+		}
+		for ( HepMC::GenEvent::particle_iterator p = fEvent->particles_begin();
+			p != fEvent->particles_end(); ++p )
+		{
+			HepMC::GenParticle* pmc = *p;
+			if (status < 0)
+			{
+				if ( !pmc->end_vertex() )
+				{
+					fParticles.push_back(pmc);
+				}
+			}
+			else
+			{
+				if ( !pmc->end_vertex() && pmc->status() == status )
+				{
+					fParticles.push_back(pmc);
+				}
 			}
 		}
 		return fParticles;

@@ -15,7 +15,7 @@ namespace HeppyyHepMCUtil
 		ReadHepMCFile(const char *fname);
 		virtual ~ReadHepMCFile();
 
-		bool 								NextEvent();
+		virtual bool 						NextEvent();
 
 		HepMC::GenCrossSection* 			GetCrossSecion();
 		double 								GetCrossSecionValue();
@@ -25,6 +25,7 @@ namespace HeppyyHepMCUtil
 		HepMC::WeightContainer*  			GetWeightContainer();
 		std::list<HepMC::GenVertex*> 		Vertices();
 		std::vector<HepMC::GenParticle*> 	HepMCParticles(bool only_final = true);
+		std::vector<HepMC::GenParticle*> 	HepMCParticlesWithStatus(int status = -1);
 
 		long int 							CurrentEventNumber() { return fCurrentEvent;}
 
@@ -32,7 +33,7 @@ namespace HeppyyHepMCUtil
 
 		bool 								failed();
 
-	private:
+	protected:
 		HepMC::IO_GenEvent fIn;
 		HepMC::GenEvent* fEvent;
 		std::list<HepMC::GenVertex*> fVertices;
