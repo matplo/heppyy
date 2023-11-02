@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include <limits>
+#include <cmath>
 
 #include <fastjet/PseudoJet.hh>
 
@@ -77,6 +78,16 @@ namespace HeppyyJewelUtil
 		std::vector<fastjet::PseudoJet> rv;
 		std::vector<fastjet::PseudoJet> ps1 = fjParticlesWithStatus(1);
 		std::vector<fastjet::PseudoJet> ps3 = fjParticlesWithStatus(3);
+		std::vector<fastjet::PseudoJet> ps4 = fjParticlesWithStatus(4);
+		// it looks like we need only one iteration on the distances...
+		// pay attention to some mass things... not just the pT subtraction
+		// - this indeed may need an additional intermediate particle structure (?)
+		// - mdelta is defined as part.mdelta = sqrt(partmom.mass2() + sqr(partmom.pT())) - partmom.pT();
+		// the end result is a mixture of particles subtracted thermal particles + remaining thermal particles
+
+		// actually not sure the algo makes sense - it is not iterative in the pair building
+		// find the pairs
+		// subtract one from the other - the momenta are updated after each pair is evaluated (?)
 		while (ps3.size() > 0)
 		{
 			auto mpair = minimum_distance(ps1, ps3);
@@ -90,6 +101,14 @@ namespace HeppyyJewelUtil
 			}
 			ps3.erase(ps3.begin() + mpair.second);
 		}
+		return rv;
+	}
+
+	// from rivet routine
+	std::vector<fastjet::PseudoJet> ReadJewelHepMC2File::fjFinalParticlesSubtractedThermalRivet()
+	{
+		std::vector<fastjet::PseudoJet> rv;
+
 		return rv;
 	}
 }
