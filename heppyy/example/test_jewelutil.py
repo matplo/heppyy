@@ -20,5 +20,6 @@ while fin.NextEvent():
     fjp4 = fin.fjParticlesWithStatus(4)
     print(f'number of particles with status 1 : {len(fjp1)} - with 3 : {len(fjp3)} - with 4 : {len(fjp4)}')
     # fjsubtr = fin.fjFinalParticlesSubtractedThermal()
+    fjsubtr = fin.fjFinalParticlesSubtractedThermalRivet()
     pbar.update(1)
 pbar.close()

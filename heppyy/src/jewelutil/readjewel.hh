@@ -22,7 +22,7 @@ namespace HeppyyJewelUtil
         std::vector<fastjet::PseudoJet> fjParticles(bool only_final = true);
         std::vector<fastjet::PseudoJet> fjParticlesWithStatus(int status = -1);
         std::vector<fastjet::PseudoJet> fjFinalParticlesSubtractedThermal();
-		std::vector<fastjet::PseudoJet> fjFinalParticlesSubtractedThermalRivet();
+		std::vector<fastjet::PseudoJet> fjFinalParticlesSubtractedThermalRivet(double dmax = 0.5);
 
 	private:
         ;

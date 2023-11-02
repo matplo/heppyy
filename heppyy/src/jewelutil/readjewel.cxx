@@ -8,7 +8,7 @@
 #include <cmath>
 
 #include <fastjet/PseudoJet.hh>
-
+#include "jewelrivetstrip.hh"
 namespace HeppyyJewelUtil
 {
 	ReadJewelHepMC2File::ReadJewelHepMC2File(const char *fname) 
@@ -105,10 +105,11 @@ namespace HeppyyJewelUtil
 	}
 
 	// from rivet routine
-	std::vector<fastjet::PseudoJet> ReadJewelHepMC2File::fjFinalParticlesSubtractedThermalRivet()
+	std::vector<fastjet::PseudoJet> ReadJewelHepMC2File::fjFinalParticlesSubtractedThermalRivet(double dmax)
 	{
 		std::vector<fastjet::PseudoJet> rv;
-
+		HeppyyRivet::SubtractedJewelEvent se(dmax);
+		se.project(fEvent);
 		return rv;
 	}
 }
