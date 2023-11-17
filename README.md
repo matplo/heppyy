@@ -29,7 +29,6 @@ module load fastjet/3.4.0
 yasp -i fjcontrib/1.051
 yasp -mi pythia8/8308
 module load pythia8/8308
-./install_with_yasp.sh
 yasp -mi sherpa/2.2.15 --define extra_opt=--disable-pyext
 ```
 
@@ -39,7 +38,12 @@ yasp -mi sherpa/2.2.15 --define extra_opt=--disable-pyext
 cd ${workdir}
 ./yasp/yaspenv.sh
 module load root HepMC2 LHAPDF6 HepMC3 pythia8 sherpa fastjet
-git clone https://github.com/matplo/heppyu.git
+git clone https://github.com/matplo/heppyy.git
+./heppyy/install_with_yasp.sh
+```
+
+- test
+```
 ./heppyy/example/test_yaspcppyy_pythia_fastjet.py
 ```
 
