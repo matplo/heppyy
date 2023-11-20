@@ -10,7 +10,7 @@ message(STATUS "SOURCES: ${SOURCES_LIB}")
 string(REPLACE ".cxx" ".hh" HEADERS_LIB "${SOURCES_LIB}")
 
 add_library(${NAME_LIB} SHARED ${SOURCES_LIB})
-target_include_directories(${NAME_LIB} PUBLIC ${HEPMC_INCLUDE_DIRS} ${FASTJET_DIR}/include ${CMAKE_SOURCE_DIR}/src)
-target_link_libraries(${NAME_LIB} PUBLIC ${HEPMC_LIBRARIES} ${FASTJET_LIBS})
+target_include_directories(${NAME_LIB} PUBLIC ${HEPMC_INCLUDE_DIRS} ${ROOT_INCLUDE_DIRS} ${FASTJET_DIR}/include ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(${NAME_LIB} PUBLIC ${HEPMC_LIBRARIES} ${FASTJET_LIBS} ${ROOT_LIBRARIES})
 
 install_targets_custom()

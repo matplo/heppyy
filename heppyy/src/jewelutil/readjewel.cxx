@@ -8,18 +8,20 @@
 #include <cmath>
 
 #include <fastjet/PseudoJet.hh>
-#include "jewelrivetstrip.hh"
 namespace HeppyyJewelUtil
 {
-	ReadJewelHepMC2File::ReadJewelHepMC2File(const char *fname) 
+	ReadJewelHepMC2File::ReadJewelHepMC2File(const char *fname)
 		: HeppyyHepMCUtil::ReadHepMCFile(fname)
+		, _se(new HeppyyRivet::SubtractedJewelEvent(0.5))
+		, _PDG(new TDatabasePDG())
 	{
 		;
 	}
 
 	ReadJewelHepMC2File::~ReadJewelHepMC2File()
 	{
-		;
+		delete _se;
+		delete _PDG;
 	}
 
 	std::vector<fastjet::PseudoJet> ReadJewelHepMC2File::fjParticles(bool only_final)
@@ -73,7 +75,7 @@ namespace HeppyyJewelUtil
 
 	/// @brief return the list of pseudojets after the subtraction of the thermal particles - status 3
 	/// @return std::vector<fastjet::PseudoJet>
-	std::vector<fastjet::PseudoJet> ReadJewelHepMC2File::fjFinalParticlesSubtractedThermal()
+	std::vector<fastjet::PseudoJet> ReadJewelHepMC2File::fjFinalParticlesSubtractedThermalTest()
 	{
 		std::vector<fastjet::PseudoJet> rv;
 		std::vector<fastjet::PseudoJet> ps1 = fjParticlesWithStatus(1);
@@ -104,12 +106,31 @@ namespace HeppyyJewelUtil
 		return rv;
 	}
 
-	// from rivet routine
-	std::vector<fastjet::PseudoJet> ReadJewelHepMC2File::fjFinalParticlesSubtractedThermalRivet(double dmax)
+	void ReadJewelHepMC2File::runSubstractionThermalRivet(double dmax);
+	{
+		_se->resetdRmax(dmax);
+		_se->project(fEvent);
+	}
+
+		// from rivet routine
+	std::vector<fastjet::PseudoJet> ReadJewelHepMC2File::getPseudoJets(bool charged_only = false);
 	{
 		std::vector<fastjet::PseudoJet> rv;
-		HeppyyRivet::SubtractedJewelEvent se(dmax);
-		se.project(fEvent);
+		//for (auto &p : se.subtractedEvent())
+		const std::vector<HepMC::GenParticle> & vse = _se->subtractedEvent();
+		for (std::size_t i = 0; i < vse.size(); ++i)
+		{
+			if (charged_only)
+			{
+				int pdg_id = vse[i].pdg_id();
+				TParticlePDG *pPDG = _PDG->GetParticle(pdg_id);
+				if (pPDG->Charge() == 0)
+					continue;
+			}
+			fastjet::PseudoJet psj(vse[i].momentum().px(), vse[i].momentum().py(), vse[i].momentum().pz(), vse[i].momentum().e());
+			psj.set_user_index(i);
+			rv.push_back(psj);
+		}
 		return rv;
 	}
 }

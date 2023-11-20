@@ -7,6 +7,7 @@ import tqdm
 import sys
 fname = "/rstorage/ploskon/jewel/ptmin100/job0/eventfiles/out_lhc10cent_0.hepmc"
 # fname = "/rstorage/ploskon/jewel/ptmin100/job0/eventfiles/out_lhcvac_0.hepmc"
+fname = "/rstorage/ploskon/jewel/output_v2.4.0/ptmin100/job0/eventfiles/out_lhc10cent_0.hepmc"
 if len(sys.argv) > 1:
     fname = sys.argv[1]
 fin = HeppyyJewelUtil.ReadJewelHepMC2File(fname)

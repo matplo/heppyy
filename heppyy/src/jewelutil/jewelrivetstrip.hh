@@ -45,6 +45,8 @@ namespace HeppyyRivet {
 
 		const std::vector<HepMC::GenParticle> &subtractedEvent() const { return _subtrevent; }
 
+		void resetdRmax(double dmax) {_dRmax = dmax;}
+
 		protected:
 
 		void clear();

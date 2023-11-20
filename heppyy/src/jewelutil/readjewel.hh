@@ -11,6 +11,10 @@
 
 #include<fastjet/PseudoJet.hh>
 
+#include <TDatabasePDG.h>
+
+#include "jewelrivetstrip.hh"
+
 namespace HeppyyJewelUtil
 {
 	class ReadJewelHepMC2File : public HeppyyHepMCUtil::ReadHepMCFile
@@ -21,11 +25,17 @@ namespace HeppyyJewelUtil
 
         std::vector<fastjet::PseudoJet> fjParticles(bool only_final = true);
         std::vector<fastjet::PseudoJet> fjParticlesWithStatus(int status = -1);
-        std::vector<fastjet::PseudoJet> fjFinalParticlesSubtractedThermal();
-		std::vector<fastjet::PseudoJet> fjFinalParticlesSubtractedThermalRivet(double dmax = 0.5);
+        std::vector<fastjet::PseudoJet> fjFinalParticlesSubtractedThermalTest();
 
-	private:
-        ;
+		void runSubstractionThermalRivet(double dmax);
+		std::vector<fastjet::PseudoJet> getPseudoJets(bool charged_only = false);
+
+		TDatabasePDG *getPDG() {return _PDG;}
+		HeppyyRivet::SubtractedJewelEvent *getSE() {return _se;}
+
+	private: 
+		TDatabasePDG *_PDG;
+		HeppyyRivet::SubtractedJewelEvent *_se;
 	};
 };
 #endif
