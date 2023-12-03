@@ -106,14 +106,14 @@ namespace HeppyyJewelUtil
 		return rv;
 	}
 
-	void ReadJewelHepMC2File::runSubstractionThermalRivet(double dmax);
+    void ReadJewelHepMC2File::runSubstractionThermalRivet(double dmax)
 	{
 		_se->resetdRmax(dmax);
 		_se->project(fEvent);
 	}
 
 		// from rivet routine
-	std::vector<fastjet::PseudoJet> ReadJewelHepMC2File::getPseudoJets(bool charged_only = false);
+	std::vector<fastjet::PseudoJet> ReadJewelHepMC2File::getPseudoJets(bool charged_only)
 	{
 		std::vector<fastjet::PseudoJet> rv;
 		//for (auto &p : se.subtractedEvent())
