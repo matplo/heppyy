@@ -1,4 +1,4 @@
-find_package(Python 3.6 REQUIRED COMPONENTS Interpreter Development NumPy)
+find_package(Python 3.6 REQUIRED COMPONENTS Interpreter Development.Module NumPy)
 if (Python_FOUND)
     message(STATUS "${Green}Python ver. ${Python_VERSION} found.${ColourReset}")
     set(HEPPY_PYTHON_FOUND True)
