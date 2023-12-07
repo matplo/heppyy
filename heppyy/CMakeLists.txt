@@ -1,5 +1,5 @@
 # This file is just an orchestration
-cmake_minimum_required(VERSION 3.13.5)
+cmake_minimum_required(VERSION 3.15)
 # SWIG: use SWIG_MODULE_NAME property.
 if(POLICY CMP0086)
   cmake_policy(SET CMP0086 NEW)
