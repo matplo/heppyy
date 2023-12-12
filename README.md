@@ -30,6 +30,8 @@ yasp -i fjcontrib/1.051
 yasp -mi pythia8/8308
 module load pythia8/8308
 yasp -mi sherpa/2.2.15 --define extra_opt=--disable-pyext
+# you may need to use a cxx flag on a mac
+# yasp -mi sherpa/2.2.15 --define cxx14=true
 ```
 
 - then one can do (starting with a fresh shell below)
