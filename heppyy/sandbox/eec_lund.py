@@ -67,19 +67,46 @@ def eec_from_lsplit_to_dict(l, w, pt_cut):
 	d = {}
 	_parts1 = [ p for p in l.harder().constituents() if p.perp() > 1.]
 	_ = [ p.set_user_index(0) for p in _parts1]
-	for p in _parts1:
-		print(p.user_index())
+	#for p in _parts1:
+	#	print(p.user_index())
 
 	_parts2 = [ p for p in l.softer().constituents() if p.perp() > 1.]
 	_ = [ p.set_user_index(1) for p in _parts2]
-	for p in _parts2:
-		print(p.user_index())
+	#for p in _parts2:
+	#	print(p.user_index())
 
 	_combs = combinations(_parts1, 2)
 	d['weights'] = [(x[0].perp() * x[1].perp())/(w*w) for x in _combs]
 	d['RL'] = [x[0].delta_R(x[1]) for x in _combs]
 	d['type'] = [x[0].user_index() + x[1].user_index() for x in _combs]
 	return d
+
+class SimplePartonTagger(object):
+	def __init__(self) -> None:
+		self.partons = None
+
+	def tag(self, pythia, jet):
+		self.pythia = pythia
+		# self.partons = vector[fj.PseudoJet]([fj.PseudoJet(p.px(), p.py(), p.pz(), p.e()) for p in self.pythia.event if abs(p.status()) == 23])
+		self.partons = vector[fj.PseudoJet]([fj.PseudoJet(p.px(), p.py(), p.pz(), p.e()) for p in self.pythia.event if abs(p.status()) == 23])
+		for p in self.pythia.event:
+			if abs(p.status()) == 23:
+				print(p.id(), p.pT(), p.eta(), p.phi())
+		print("- main process:", pythia.info.id1(), pythia.info.id2())
+		# s = pythia.info.name()
+		# print("- main process:", pythia.info.code(), pythia.info.name(), pythia.info.nFinal())
+		print([(p.perp(), p.eta(), p.phi()) for p in self.partons])
+		self.pindexes = [i for i,p in enumerate(self.pythia.event) if abs(p.status()) == 23]
+		_ = [p.set_user_index(self.pindexes[i]) for i,p in enumerate(self.partons)]
+		_pairs = [(p, p.delta_R(jet)) for p in self.partons]
+		print([p[0].perp() for p in _pairs])
+		if len(_pairs) == 0:
+			print(f'[w] no partons found or pairs found {len(self.partons)} {len(_pairs)}')
+			return None
+		_pairs.sort(key=lambda x: x[1])
+		print([(self.pythia.event[x[0].user_index()].id(), x[0].perp(), jet.perp(), x[1]) for x in _pairs])
+		return _pairs[0][0]
+
 
 def main():
 	parser = argparse.ArgumentParser(description='pythia8 fastjet on the fly', prog=os.path.basename(__file__))
@@ -103,7 +130,8 @@ def main():
 		print(f'[w] reverting ptcut for EECs to {pt_cut}')
 
 	pythia = Pythia8.Pythia()
-
+	ptagger = SimplePartonTagger()
+	# print(pythia.settings)
 	# jet finder
 	# print the banner first
 	fj.ClusterSequence.print_banner()
@@ -149,7 +177,12 @@ def main():
 		parts = vector[fj.PseudoJet]([fj.PseudoJet(p.px(), p.py(), p.pz(), p.e()) for p in pythia.event if p.isFinal()])
 		# parts = pythiafjext.vectorize(pythia, True, -1, 1, False)
 		jets = jet_selector(jet_def(parts))
+  
+		info = pythia.info
+		print(info.name, info.id1(), info.id2(), info.x1(), info.x2(), info.Q2Fac(), info.Q2Ren(), info.sigmaGen(), info.sigmaErr())
+    
 		for j in jets:
+			ptagger.tag(pythia, j)
 			jdict = jet_to_dict(j)
 			lunds = lund_gen.result(j)
 			nsplits = len(lunds)
