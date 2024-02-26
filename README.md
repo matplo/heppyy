@@ -11,8 +11,8 @@ cd ${workdir}
 git clone https://github.com/matplo/yasp
 cd yasp
 ./yaspenv.sh
-./yasp.py -i yasp -m
-module load yasp
+# ./yasp.py -i yasp -m
+# module load yasp
 
 # install some packages
 python -m pip install numpy
