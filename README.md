@@ -15,6 +15,7 @@ cd yasp
 # module load yasp
 
 # Install some packages: can use --define version=x.xx.xx to set custom versions
+python -m pip install numpy
 yasp -mi HepMC2/2.06.11
 module load HepMC2/2.06.11
 yasp -mi HepMC3/3.2.7
