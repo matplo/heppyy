@@ -14,21 +14,23 @@ cd yasp
 # ./yasp.py -i yasp -m
 # module load yasp
 
-# install some packages
-python -m pip install numpy
-yasp -mi root/default --define version=6.28.06
-module load root/default
+# Install some packages: can use --define version=x.xx.xx to set custom versions
 yasp -mi HepMC2/2.06.11
 module load HepMC2/2.06.11
-yasp -mi LHAPDF6/6.5.3 --define version=6.5.4
-module load LHAPDF6/6.5.3
-yasp -mi HepMC3/3.2.5 --define version=3.2.6
-module load HepMC3/3.2.5
-yasp -mi fastjet/3.4.0
-module load fastjet/3.4.0
-yasp -i fjcontrib/1.051
-yasp -mi pythia8/8308
-module load pythia8/8308
+yasp -mi HepMC3/3.2.7
+module load HepMC3/3.2.7
+yasp -mi LHAPDF6/6.5.4
+module load HepMC3/3.2.7
+yasp -mi fastjet/3.4.2
+module load fastjet/3.4.2
+yasp -i fjcontrib/1.053-custom  # Builds into fastjet
+yasp -i jetflav/default         # Builds into fastjet
+yasp -mi root/6.28.12
+module load root/6.28.12
+yasp -mi roounfold/default
+module load roounfold/default
+yasp -mi pythia8/8310
+module load pythia8/8310
 yasp -mi sherpa/2.2.15 --define extra_opt=--disable-pyext
 # you may need to use a cxx flag on a mac
 # yasp -mi sherpa/2.2.15 --define cxx14=true
@@ -38,8 +40,9 @@ yasp -mi sherpa/2.2.15 --define extra_opt=--disable-pyext
 
 ```
 cd ${workdir}
-./yasp/yaspenv.sh
-module load root HepMC2 LHAPDF6 HepMC3 pythia8 sherpa fastjet
+source yasp/venvyasp/bin/activate  # Load the virtualenv
+module use yasp/software/modules   # Tell module where to look
+module load root roounfold HepMC2 LHAPDF6 HepMC3 pythia8 sherpa fastjet
 git clone https://github.com/matplo/heppyy.git
 ./heppyy/install_with_yasp.sh
 ```
