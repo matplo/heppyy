@@ -32,13 +32,13 @@ namespace pythiafjtools{
     int update_hadronization(Pythia8::Pythia & pythia, const int require_pid = 0, const int daughters_size = -1);
 
 	std::vector<fastjet::PseudoJet> vectorize_select(	const Pythia8::Pythia &p,
-														int *selection, int nsel,
+														std::vector<int>& selection,
 														int user_index_offset = 0,
 														bool add_particle_info = false,
 														float particle_mass = -1);
 
 	std::vector<fastjet::PseudoJet> vectorize_select_replaceD0(	const Pythia8::Pythia &p,
-																int *selection, int nsel,
+																std::vector<int>& selection,
 																int user_index_offset = 0,
 																bool add_particle_info = false,
 																bool remove_soft_pion = false);
@@ -49,7 +49,6 @@ namespace pythiafjtools{
 	int getSoftPion( const Pythia8::Pythia &pythia, int D0particle_index );
 	int removeIndexFromv( std::vector<fastjet::PseudoJet> v, std::vector<int> saved_indices, int index);
 	std::vector<fastjet::PseudoJet> removeByIndex( std::vector<fastjet::PseudoJet> v, int indextoremove);
-	std::vector<fastjet::PseudoJet> removeByIndex( std::vector<fastjet::PseudoJet> v, int *selection, int nsel);
 	std::vector<fastjet::PseudoJet> replaceKPwD0( const Pythia8::Pythia &pythia, std::vector<fastjet::PseudoJet> v, int D0index, int dau1index, int dau2index);
 
 	// implemented in fjtools

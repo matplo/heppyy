@@ -79,8 +79,7 @@ namespace pythiafjtools{
     }
 
 	std::vector<fastjet::PseudoJet> vectorize_select(const Pythia8::Pythia &pythia,
-													 int *selection,
-													 int nsel,
+													 std::vector<int>& selection,
 													 int user_index_offset/* = 0*/,
 													 bool add_particle_info/* = false*/,
 													 float particle_mass/* = -1*/)
@@ -89,6 +88,7 @@ namespace pythiafjtools{
 		std::bitset<kMaxSetting> mask(0); // no particle accepted
 		std::bitset<kMaxSetting> negmask(0); // no particle accepted
 		negmask.flip();
+		int nsel = selection.size();
 		for (unsigned int i = 0; i < nsel; i++)
 		{
 			if (selection[i] > 0)
@@ -176,8 +176,7 @@ namespace pythiafjtools{
 
     // From Beatrice
 	std::vector<fastjet::PseudoJet> vectorize_select_replaceD0(const Pythia8::Pythia &pythia,
-													 		   int *selection,
-													 		   int nsel,
+													 		   std::vector<int>& selection,
 													 		   int user_index_offset,
 													 		   bool add_particle_info,
 															   bool remove_soft_pion)
@@ -193,6 +192,7 @@ namespace pythiafjtools{
 		std::bitset<kMaxSetting> mask(0); // no particle accepted
 		std::bitset<kMaxSetting> negmask(0); // no particle accepted
 		negmask.flip();
+		int nsel = selection.size();
 		for (unsigned int i = 0; i < nsel; i++)
 		{
 			if (selection[i] > 0)
@@ -410,14 +410,6 @@ namespace pythiafjtools{
 	{
 		// std::cout << "in removeByIndex " << v.size() << " indextoremove " << indextoremove << std::endl; 
 		v.erase(v.begin()+indextoremove);
-		return v;
-	}
-	std::vector<fastjet::PseudoJet> removeByIndex(std::vector<fastjet::PseudoJet> v, int *selection, int nsel) //selection must be a reverse-ordered list
-	{
-		for (int i=0; i<nsel; i++) {
-			// std::cout << "in removeByIndex " << v.size() << " indextoremove " << selection[i] << std::endl; 
-			v.erase(v.begin() + selection[i]);
-		}
 		return v;
 	}
 
