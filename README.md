@@ -25,7 +25,8 @@ module load HepMC3/3.2.7
 yasp -mi fastjet/3.4.2
 module load fastjet/3.4.2
 yasp -i fjcontrib/1.053-custom  # Builds into fastjet
-yasp -i jetflav/default         # Builds into fastjet
+yasp -i IFNPlugin/jetflav         # Builds into fastjet
+# yasp -i jetflav/default         # Builds into fastjet
 yasp -mi root/6.28.12
 module load root/6.28.12
 yasp -mi roounfold/default
