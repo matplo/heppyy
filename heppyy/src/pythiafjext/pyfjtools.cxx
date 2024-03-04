@@ -398,12 +398,14 @@ namespace pythiafjtools{
 	}
 
 	int removeIndexFromv( std::vector<fastjet::PseudoJet> v, std::vector<int> saved_indices, int index) {
+		int default_return_value = -1;
 		if (std::count(saved_indices.begin(), saved_indices.end(), index)) {
 			std::vector<int>::iterator it = std::find(saved_indices.begin(), saved_indices.end(), index);
 			int index_to_rm = it - saved_indices.begin();
 			// remove(v.begin(), v.end(), v[index_to_rm]); //TODO: see if this is doing what we think it's doing
 			return index_to_rm;
 		}
+		return default_return_value;
 	}
 
 	std::vector<fastjet::PseudoJet> removeByIndex(std::vector<fastjet::PseudoJet> v, int indextoremove)
