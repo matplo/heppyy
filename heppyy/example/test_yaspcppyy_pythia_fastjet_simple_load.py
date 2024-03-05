@@ -60,15 +60,18 @@ def main():
 		parts = vector[fj.PseudoJet]([fj.PseudoJet(p.px(), p.py(), p.pz(), p.e()) for p in pythia.event if p.isFinal()])
 		# parts = pythiafjext.vectorize(pythia, True, -1, 1, False)
 		jets = jet_selector(jet_def(parts))
+		print(f'number of jets: {len(jets)} from n parts: {len(parts)}')
 		for j in jets:
+			groom_shop = fj.contrib.GroomerShop(j, fj.cambridge_algorithm)
+			max_kt = groom_shop.max_kt()
 			lunds = lund_gen.result(j)
 			if args.verbose:
-				print(f'jet pT={j.perp()}')
+				print(f'jet pT={j.perp()} sigmaGen={pythia.info.sigmaGen()}')
 			if args.verbose:
 				for i, l in enumerate(lunds):
 					print('- L {} pT={:5.2f} eta={:5.2f}'.format(i, l.pair().perp(), l.pair().eta()))
-					print('  Deltas={}'.format(l.Delta()))
-					print('  kts={}'.format(l.kt()))
+					print('  Delta={}'.format(l.Delta()))
+					print('  kt={}'.format(l.kt()), 'is max kT?', l.kt() == max_kt.kt())
 					print()
 
 

@@ -1,6 +1,6 @@
 add_compile_options(${FASTJET_CXXFLAGS})
 
-set(MODULE_NAME fjext)
+set(MODULE_NAME groom)
 set(MODULE ${PROJECT_NAME}_${MODULE_NAME})
 set(NAME_LIB ${MODULE})
 
