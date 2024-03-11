@@ -1,3 +1,5 @@
+import cppyy
+import heppyy.util.pythia8_cppyy
 from cppyy.gbl import Pythia8
 
 

@@ -3,7 +3,6 @@ import cppyy
 
 headers = [
     "Pythia8/Pythia.h",
-    "Pythia8/Event.h"
 ]
 
 packs = ['pythia8']
