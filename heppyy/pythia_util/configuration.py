@@ -58,6 +58,8 @@ def add_standard_pythia_args(parser):
 	parser.add_argument('--py-PbPb', help="setup PbPb collisions", default=False, action='store_true')
 	parser.add_argument('--py-cmnd', help="read pythia cmnd file(s) - yes, can be multiples", nargs='+', required=False)
 	parser.add_argument('--py-cmnd-out', help="write pythia cmnd file", required=False, default='Pythia8.cmnd')
+	parser.add_argument('--py-vincia', help="select parton shower vincia", default=False, action='store_true')
+	parser.add_argument('--py-dire', help="select parton shower dire", default=False, action='store_true')
 	# legacy support
 	parser.add_argument('--nev', help='number of events', default=1, type=int)
 
@@ -276,6 +278,16 @@ def pythia_config_from_args(args):
 	if args.py_hardQCD:
 		sconfig_pythia.append("HardQCD:all=on")
 		procsel += 1
+
+	if args.py_vincia:
+		sconfig_pythia.append("PartonShowers:Model = 2")
+
+	if args.py_dire:
+		sconfig_pythia.append("PartonShowers:Model = 3")
+
+	if args.py_dire and args.py_vincia:
+		print("[e] both Vincia and Dire requested - not supported")
+		return None
 
 	if args.py_PbPb:
 		# from main113.cc
