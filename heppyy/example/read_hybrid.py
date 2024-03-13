@@ -49,7 +49,8 @@ def main():
 	for i in tqdm.tqdm(range(args.nev)):
 		if not input.nextEvent():
 			break
-		parts = input.getPseudoJets()
+		parts = input.getParticles()
+		partons = input.getPartons()
 		sparts = input.getParticlesStr()
 		spartons = input.getPartonsStr()
 		if args.verbose:
@@ -60,8 +61,8 @@ def main():
 		if len(jets) == 0:
 			continue
 		print(f'number of accepted jets: {len(jets)} - leading jet pt: {jets[0].pt()} eta: {jets[0].eta()}')
-		print(f' - parton 0: {spartons[0]}')
-		print(f' - parton 1: {spartons[1]}')
+		print(f' - parton 0: {spartons[0]} \t - {partons[0].perp()} {partons[0].eta()}')
+		print(f' - parton 1: {spartons[1]} \t - {partons[1].perp()} {partons[1].eta()}')
 		for j in jets:
 			lunds = lund_gen.result(j)
 

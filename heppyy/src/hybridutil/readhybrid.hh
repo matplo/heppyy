@@ -20,8 +20,10 @@ namespace heppyy
 		HybridFile(const char *fname);
 		virtual ~HybridFile();
 
-		std::vector<fastjet::PseudoJet> getPseudoJets(bool charged_only = false);
+		std::vector<fastjet::PseudoJet> getParticles(bool charged_only = false);
 		const std::vector<std::string> getParticlesStr();
+
+		std::vector<fastjet::PseudoJet> getPartons();
 		const std::vector<std::string> getPartonsStr();
 		const std::string getEventStr();
 

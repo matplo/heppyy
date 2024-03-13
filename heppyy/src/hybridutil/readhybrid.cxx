@@ -120,7 +120,7 @@ namespace heppyy
 		return 0.0;
 	}
 
-	std::vector<fastjet::PseudoJet> HybridFile::getPseudoJets(bool charged_only)
+	std::vector<fastjet::PseudoJet> HybridFile::getParticles(bool charged_only)
 	{
 		std::vector<fastjet::PseudoJet> rv;
 		unsigned int i = 0;
@@ -140,7 +140,28 @@ namespace heppyy
 		}
 		return rv;
 	}
-	
+
+	std::vector<fastjet::PseudoJet> HybridFile::getPartons()
+	{
+		std::vector<fastjet::PseudoJet> rv;
+		unsigned int i = 0;
+		for (auto &p : _spartons)
+		{
+			std::istringstream iss(p);
+			int pid;
+			int status;
+			double px, py, pz, e;
+			iss >> px >> py >> pz >> e >> pid >> status;
+			// TParticlePDG *pPDG = _PDG->GetParticle(pid);
+			// if (charged_only && pPDG->Charge() == 0)
+			// 	continue;
+			fastjet::PseudoJet psj(px, py, pz, e);
+			psj.set_user_index(i++);
+			rv.push_back(psj);
+		}
+		return rv;
+	}
+
 	const std::vector<std::string> HybridFile::getParticlesStr()
 	{
 		return _sparticles;
