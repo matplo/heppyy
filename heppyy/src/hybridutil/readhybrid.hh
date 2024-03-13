@@ -21,6 +21,9 @@ namespace heppyy
 		virtual ~HybridFile();
 
 		std::vector<fastjet::PseudoJet> getPseudoJets(bool charged_only = false);
+		const std::vector<std::string> getParticlesStr();
+		const std::vector<std::string> getPartonsStr();
+		const std::string getEventStr();
 
 		TDatabasePDG *getPDG() {return _PDG;}
 		bool 		nextEvent();

@@ -140,4 +140,20 @@ namespace heppyy
 		}
 		return rv;
 	}
+	
+	const std::vector<std::string> HybridFile::getParticlesStr()
+	{
+		return _sparticles;
+	}
+
+	const std::vector<std::string> HybridFile::getPartonsStr()
+	{
+		return _spartons;
+	}
+
+	const std::string HybridFile::getEventStr()
+	{
+		return _sevent;
+	}
+
 };
