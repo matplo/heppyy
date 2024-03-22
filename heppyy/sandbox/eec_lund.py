@@ -26,7 +26,7 @@ from cppyy.gbl.std import vector
 
 from heppyy.pythia_util import configuration as pyconf
 
-import ROOT
+# import ROOT
 import math
 import array
 import pandas as pd
@@ -179,7 +179,8 @@ def main():
 		jets = jet_selector(jet_def(parts))
   
 		info = pythia.info
-		print(info.name, info.id1(), info.id2(), info.x1(), info.x2(), info.Q2Fac(), info.Q2Ren(), info.sigmaGen(), info.sigmaErr())
+		_name = info.name()
+		print(_name, info.id1(), info.id2(), info.x1(), info.x2(), info.Q2Fac(), info.Q2Ren(), info.sigmaGen(), info.sigmaErr())
     
 		for j in jets:
 			ptagger.tag(pythia, j)
