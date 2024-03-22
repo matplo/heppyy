@@ -40,8 +40,19 @@ lhapdf install cteq6l1
 
 ## run powheg
 
+- dijet
 ```
 pwhg_dijet
+```
+
+- charm or beauty
+
+```
+lhapdf install cteq66
+ln -sf powheg_hvq_c_lhc.input powheg.input
+# or for b quarks
+# ln -sf powheg_hvq_b_lhc.input powheg.input
+pwhg_hvq
 ```
 
 ## shower+hadronize (analyze) with pythia8
