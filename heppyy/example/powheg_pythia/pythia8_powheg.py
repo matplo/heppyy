@@ -63,7 +63,8 @@ def main():
 		parts = vector[fj.PseudoJet]([fj.PseudoJet(p.px(), p.py(), p.pz(), p.e()) for p in pythia.event if p.isFinal()])
 		# parts = pythiafjext.vectorize(pythia, True, -1, 1, False)
 		jets = jet_selector(jet_def(parts))
-		print(f'number of jets: {len(jets)} from n parts: {len(parts)}')
+		if args.verbose:
+			print(f'number of jets: {len(jets)} from n parts: {len(parts)}')
 		# pythiafjtools.pythia_fastjet_test(pythia)
 		_info = Pythia8.getInfo(pythia)
 		#print(f'from info: {_info.code()} {_info.sigmaGen()} {_info.sigmaErr()}')
@@ -84,9 +85,6 @@ def main():
 
 
 	pythia.stat()
-
-	print(type(pythia))
-
 
 if __name__ == '__main__':
 	main()

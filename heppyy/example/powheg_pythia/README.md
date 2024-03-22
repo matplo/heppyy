@@ -56,9 +56,10 @@ module load pythia8
 
 # python code
 
-- load lhe file to pythia and run for some events ()
+- load lhe file to pythia and run for some events (see [pythia8_powheg.py](https://github.com/matplo/heppyy/blob/main/heppyy/example/powheg_pythia/pythia8_powheg.py))
 	- note we generated 1000 events as per powheg config file...
+	- we read .lhe file + run pythia and fastjet for each event... 
 
 ```
-./pythia8_powheg.py events.lhe --nev 1000
+./pythia8_powheg.py events.lhe --nev 1000 --verbose
 ```
