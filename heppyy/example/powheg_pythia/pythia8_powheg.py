@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
 from __future__ import print_function
-import tqdm
-import argparse
+
 import os
-import numpy as np
 import sys
 import yasp
+import tqdm
 import cppyy
+import argparse
 
 import heppyy.util.fastjet_cppyy
 import heppyy.util.pythia8_cppyy
@@ -17,16 +17,14 @@ from cppyy.gbl import fastjet as fj
 from cppyy.gbl import Pythia8
 from cppyy.gbl.std import vector
 
-# from cppyy.gbl import pythiaext
-
 from heppyy.pythia_util import configuration as pyconf
 
 print(cppyy.gbl.__dict__)
 
 def main():
-	parser = argparse.ArgumentParser(description='pythia8 fastjet on the fly', prog=os.path.basename(__file__))
+	parser = argparse.ArgumentParser(description='pythia8 fastjet taking lhe file [from powheg for example]', prog=os.path.basename(__file__))
+	parser.add_argument('input', help="lhe file [from powheg would be likely pwgevents.lhe]", type=str)
 	pyconf.add_standard_pythia_args(parser)
-	parser.add_argument('--ignore-mycfg', help="ignore some settings hardcoded here", default=False, action='store_true')
 	parser.add_argument('-v', '--verbose', help="be verbose", default=False, action='store_true')
 	args = parser.parse_args()
 
@@ -37,7 +35,7 @@ def main():
 	# set up our jet definition and a jet selector
 	jet_R0 = 0.4
 	jet_def = fj.JetDefinition(fj.antikt_algorithm, jet_R0)
-	jet_selector = fj.SelectorPtMin(100.0) * fj.SelectorAbsEtaMax(1)
+	jet_selector = fj.SelectorPtMin(5) * fj.SelectorAbsEtaMax(3)
 	print(jet_def)
 
 	jet_def_lund = fj.JetDefinition(fj.cambridge_algorithm, 1.0)
@@ -45,10 +43,15 @@ def main():
 	print('making lund diagram for all jets...')
 	print(f' {lund_gen.description()}')
 
-	mycfg = ['PhaseSpace:pThatMin = 100']
-	if args.ignore_mycfg:
-		mycfg = []
-	pythia = pyconf.create_and_init_pythia_from_args(args, mycfg)
+	mycfg = [	'HardQCD:all=off', f'Beams:LHEF = {args.input}', 'Beams:frameType = 4', 
+          	'Next:numberCount = 0', 'Next:numberShowEvent = 0', 'Next:numberShowInfo = 0', 'Next:numberShowProcess = 0', 'Stat:showProcessLevel = on']
+	# pythia = pyconf.create_and_init_pythia_from_args(args, mycfg)
+	pythia = Pythia8.Pythia()
+	for s in mycfg:
+		pythia.readString(s)
+	if not pythia.init():
+		print("[e] pythia initialization failed.")
+		return
 	if not pythia:
 		print("[e] pythia initialization failed.")
 		return
