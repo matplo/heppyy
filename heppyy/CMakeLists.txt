@@ -13,6 +13,10 @@ if(POLICY CMP0078)
   cmake_policy(SET CMP0078 NEW)
 endif(POLICY CMP0078)
 
+if(POLICY CMP0144)
+  cmake_policy(SET CMP0144 OLD)
+endif(POLICY CMP0144)
+
 project(heppyy VERSION 1.0 LANGUAGES CXX)
 message(STATUS "version: ${PROJECT_VERSION}")
 
