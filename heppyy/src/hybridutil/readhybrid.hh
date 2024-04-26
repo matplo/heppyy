@@ -11,16 +11,35 @@
 
 namespace heppyy
 {
+	class EventInfo
+	{
+	public:
+		EventInfo();
+		EventInfo(const std::string &line);
+		void set(const std::string &line);
+		virtual ~EventInfo() {;}
+		double weight() const {return _weight;}
+		double cross() const {return _cross;}
+		double sigmaGen() const { return _cross; }
+		double x() const { return _x; }
+		double y() const {return _y;}
+	private:
+		double _weight;
+		double _cross;
+		double _x;
+		double _y;
+	};
+
 	class HybridFile
 	{
 	public:
-		enum ParticleInfo {kPID = 1, kStatus};
-		enum EventInfo {kWeight = 1, kCross, kX, kY};
+		// enum ParticleInfo {kPID = 1, kStatus};
+		// enum EventInfo {kWeight = 1, kCross, kX, kY};
 
 		HybridFile(const char *fname);
 		virtual ~HybridFile();
 
-		std::vector<fastjet::PseudoJet> getParticles(bool charged_only = false);
+		std::vector<fastjet::PseudoJet> getParticles(bool include_wake = false, bool charged_only = false);
 		const std::vector<std::string> getParticlesStr();
 
 		std::vector<fastjet::PseudoJet> getPartons();
@@ -28,9 +47,10 @@ namespace heppyy
 		const std::string getEventStr();
 
 		TDatabasePDG *getPDG() {return _PDG;}
+
 		bool 		nextEvent();
-		double 	eventInfo(EventInfo info);
-		double 	particleInfo(ParticleInfo info);
+
+		const EventInfo & info() {return _info;}
 
 		static bool verbose;
 	private: 
@@ -40,6 +60,7 @@ namespace heppyy
 		std::vector<std::string> _spartons;
 		std::string _sevent;
 		std::ifstream _file;
+		EventInfo _info;
 	};
 };
 #endif

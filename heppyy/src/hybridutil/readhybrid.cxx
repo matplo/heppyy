@@ -11,6 +11,37 @@
 
 namespace heppyy
 {
+
+	EventInfo::EventInfo()
+		: _weight(0.0)
+		, _cross(0.0)
+		, _x(0.0)
+		, _y(0.0)
+	{
+	}
+
+	EventInfo::EventInfo(const std::string &line)
+		: _weight(0.0)
+		, _cross(0.0)
+		, _x(0.0)
+		, _y(0.0)
+	{
+		set(line);
+	}
+
+	void EventInfo::set(const std::string &line)
+	{
+		std::istringstream iss(line);
+		std::string keyword;
+		// weight 0.00116132 cross 1.23074 X 0 Y 0
+		iss >> keyword >> _weight >> keyword >> _cross >> keyword >> _x >> keyword >> _y;
+	}
+
+	double p_energy(double px, double py, double pz, double m)
+	{
+		return std::sqrt(px * px + py * py + pz * pz + m * m);
+	}
+
 	bool HybridFile::verbose = false;
 
 	HybridFile::HybridFile(const char *fname)
@@ -67,6 +98,7 @@ namespace heppyy
 			{
 				if (verbose)
 					std::cout << "HybridFile::nextEvent - - part of event - " << line << std::endl;
+				_info.set(line);
 				_sevent += line;
 				_reading_partons = true;
 				continue;
@@ -110,17 +142,7 @@ namespace heppyy
 		return false;
 	}
 
-	double HybridFile::eventInfo(EventInfo info)
-	{
-		return 0.0;
-	}
-
-	double HybridFile::particleInfo(ParticleInfo info)
-	{
-		return 0.0;
-	}
-
-	std::vector<fastjet::PseudoJet> HybridFile::getParticles(bool charged_only)
+	std::vector<fastjet::PseudoJet> HybridFile::getParticles(bool include_wake, bool charged_only)
 	{
 		std::vector<fastjet::PseudoJet> rv;
 		unsigned int i = 0;
@@ -129,14 +151,30 @@ namespace heppyy
 			std::istringstream iss(p);
 			int pid;
 			int status;
-			double px, py, pz, e;
-			iss >> px >> py >> pz >> e >> pid >> status;
+			double px, py, pz, m;
+			iss >> px >> py >> pz >> m >> pid >> status;
+
+			// skip partons with status -2
+			if (status == -2)
+				continue;
+			// skip hadrons with index 1 or 2
+			if (include_wake == false && (status == 1 || status == 2))
+				continue;
+			// check if a charged hadron
+			// note this may mess up the background subtraction (?)
 			TParticlePDG *pPDG = _PDG->GetParticle(pid);
 			if (charged_only && pPDG->Charge() == 0)
 				continue;
+
+			double e = p_energy(px, py, pz, m);
 			fastjet::PseudoJet psj(px, py, pz, e);
-			psj.set_user_index(i++);
+			if (status == 2)
+				psj.set_user_index(-1 * i);
+			else 
+				psj.set_user_index(i);
 			rv.push_back(psj);
+
+			i++;
 		}
 		return rv;
 	}
@@ -150,11 +188,12 @@ namespace heppyy
 			std::istringstream iss(p);
 			int pid;
 			int status;
-			double px, py, pz, e;
-			iss >> px >> py >> pz >> e >> pid >> status;
-			// TParticlePDG *pPDG = _PDG->GetParticle(pid);
-			// if (charged_only && pPDG->Charge() == 0)
-			// 	continue;
+			double px, py, pz, m;
+			iss >> px >> py >> pz >> m >> pid >> status;
+			if (status != -2)
+				continue;
+			TParticlePDG *pPDG = _PDG->GetParticle(pid);
+			double e = p_energy(px, py, pz, m);
 			fastjet::PseudoJet psj(px, py, pz, e);
 			psj.set_user_index(i++);
 			rv.push_back(psj);
