@@ -92,9 +92,10 @@ class SimplePartonTagger(object):
 		for p in self.pythia.event:
 			if abs(p.status()) == 23:
 				print(p.id(), p.pT(), p.eta(), p.phi())
-		print("- main process:", pythia.info.id1(), pythia.info.id2())
-		# s = pythia.info.name()
-		# print("- main process:", pythia.info.code(), pythia.info.name(), pythia.info.nFinal())
+		pythia_info = Pythia8.getInfo(pythia)
+		print("- main process:", pythia_info.id1(), pythia_info.id2())
+		# s = pythia_info.name()
+		# print("- main process:", pythia_info.code(), pythia_info.name(), pythia_info.nFinal())
 		print([(p.perp(), p.eta(), p.phi()) for p in self.partons])
 		self.pindexes = [i for i,p in enumerate(self.pythia.event) if abs(p.status()) == 23]
 		_ = [p.set_user_index(self.pindexes[i]) for i,p in enumerate(self.partons)]
@@ -178,7 +179,8 @@ def main():
 		# parts = pythiafjext.vectorize(pythia, True, -1, 1, False)
 		jets = jet_selector(jet_def(parts))
   
-		info = pythia.info
+		# info = pythia.info # dont use this
+		info = Pythia8.getInfo(pythia)
 		_name = info.name()
 		print(_name, info.id1(), info.id2(), info.x1(), info.x2(), info.Q2Fac(), info.Q2Ren(), info.sigmaGen(), info.sigmaErr())
     

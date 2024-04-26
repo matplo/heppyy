@@ -1,0 +1,14 @@
+find_libpython
+networkx
+numpy
+pandas
+pyarrow
+pyHepMC3
+pyHepMC3.rootIO
+pyHepMC3.search
+python-dateutil
+pytz
+PyYAML
+six
+tqdm
+tzdata
