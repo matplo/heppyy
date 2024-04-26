@@ -62,7 +62,7 @@ def main():
 		sparts = input.getParticlesStr()
 		spartons = input.getPartonsStr()
 		ev_info = input.info()
-		print(f'ev_info.weight: {ev_info.weight()}, ev_info.cross: {ev_info.cross()}')
+		print(f'ev_info.weight: {ev_info.weight()}, ev_info.cross: {ev_info.cross()}, ev_info.x: {ev_info.x()}, ev_info.y: {ev_info.y()}')
 		if args.verbose:
 			print(f'event {i} has {len(partons)} partons')
 			for np in range(len(partons)):
