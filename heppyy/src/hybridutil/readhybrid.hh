@@ -36,7 +36,7 @@ namespace heppyy
 		// enum ParticleInfo {kPID = 1, kStatus};
 		// enum EventInfo {kWeight = 1, kCross, kX, kY};
 
-		HybridFile(const char *fname);
+		HybridFile(const char *fname, int medium_offset = 1001);
 		virtual ~HybridFile();
 
 		std::vector<fastjet::PseudoJet> getParticles(bool include_wake = false, bool charged_only = false);
@@ -61,6 +61,7 @@ namespace heppyy
 		std::string _sevent;
 		std::ifstream _file;
 		EventInfo _info;
+		int _medium_offset;
 	};
 };
 #endif

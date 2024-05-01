@@ -44,13 +44,15 @@ namespace heppyy
 
 	bool HybridFile::verbose = false;
 
-	HybridFile::HybridFile(const char *fname)
+	HybridFile::HybridFile(const char *fname, int medium_offset)
 		: _PDG(new TDatabasePDG())
 		, _particles()
 		, _sparticles()
 		, _spartons()
 		, _sevent()
 		, _file(fname)
+		, _info()
+		, _medium_offset(medium_offset)
 	{
 		if (_file.is_open())
 		{
@@ -168,10 +170,21 @@ namespace heppyy
 
 			double e = p_energy(px, py, pz, m);
 			fastjet::PseudoJet psj(px, py, pz, e);
-			if (status == 2)
-				psj.set_user_index(-1 * i);
-			else 
+			if (status == 2 || status == 1)
+			{
+				if (status == 2)
+				{
+					psj.set_user_index(-1 * _medium_offset - i);
+				}
+				else
+				{
+					psj.set_user_index(_medium_offset + i);
+				}
+			}
+			else
+			{
 				psj.set_user_index(i);
+			}
 			rv.push_back(psj);
 
 			i++;
