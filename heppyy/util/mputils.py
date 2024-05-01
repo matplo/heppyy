@@ -3,12 +3,19 @@ import array
 import fnmatch
 import os
 import sys
+import re
 
+def filename_safe(s):
+  _s = re.sub('[^a-zA-Z0-9 \n\.]', '_', s)
+  return _s
+  
+  
 def find_files(rootdir='.', pattern='*'):
     return [os.path.join(rootdir, filename)
             for rootdir, dirnames, filenames in os.walk(rootdir)
             for filename in filenames
             if fnmatch.fnmatch(filename, pattern)]
+
 
 def logbins(xmin, xmax, nbins):
 	if xmin <= 0:
