@@ -39,12 +39,20 @@ class Logger:
         # If console is True, create a handler for the console
         if self.console:
           self.enable_console()
-    
-    def set_complex_formatter(self):
-        self.formatter = logging.Formatter('%(asctime)s name=%(name)-12s level=%(levelname)-8s file=%(filename)s:%(lineno)d module=%(module)s func=%(funcName)s: %(message)s')
+
+    def set_formatter_string(self, s):
+        self.formatter = logging.Formatter(s)
         self.file_handler.setFormatter(self.formatter)
         if hasattr(self, 'console_handler'):
             self.console_handler.setFormatter(self.formatter)
+            
+    def set_complex_formatter(self):
+        s = '%(asctime)s name=%(name)-12s level=%(levelname)-8s file=%(filename)s:%(lineno)d module=%(module)s func=%(funcName)s: %(message)s'
+        self.set_formatter_string(s)
+
+    def set_simple_formatter(self):
+        s = '%(message)s #[%(asctime)s %(filename)s:%(lineno)d %(funcName)s]'
+        self.set_formatter_string(s)
         
     def enable_console(self):
         if hasattr(self, 'console_handler'):
