@@ -24,7 +24,7 @@ class Logger:
 
         # Create a formatter
         # formatter = logging.Formatter('%(asctime)s name=%(name)-12s level=%(levelname)-8s module=%(module)s func=%(funcName)s: %(message)s')
-        self.formatter = logging.Formatter('%(asctime)s name=%(name)-12s level=%(levelname)-8s file=%(filename)s:%(lineno)d module=%(module)s func=%(funcName)s: %(message)s')
+        self.formatter = logging.Formatter('%(message)s #[%(asctime)s %(filename)s:%(lineno)d %(funcName)s]')
 
         # Create a handler for the file
         self.file_handler = logging.FileHandler(self.log_file, mode='w')
@@ -39,7 +39,13 @@ class Logger:
         # If console is True, create a handler for the console
         if self.console:
           self.enable_console()
-          
+    
+    def set_complex_formatter(self):
+        self.formatter = logging.Formatter('%(asctime)s name=%(name)-12s level=%(levelname)-8s file=%(filename)s:%(lineno)d module=%(module)s func=%(funcName)s: %(message)s')
+        self.file_handler.setFormatter(self.formatter)
+        if hasattr(self, 'console_handler'):
+            self.console_handler.setFormatter(self.formatter)
+        
     def enable_console(self):
         if hasattr(self, 'console_handler'):
             self.logger.critical('Console handler already exists')
