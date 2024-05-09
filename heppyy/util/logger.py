@@ -24,7 +24,7 @@ class Logger:
 
         # Create a formatter
         # formatter = logging.Formatter('%(asctime)s name=%(name)-12s level=%(levelname)-8s module=%(module)s func=%(funcName)s: %(message)s')
-        self.formatter = logging.Formatter('%(message)s #[%(asctime)s %(filename)s:%(lineno)d %(funcName)s]')
+        self.formatter = logging.Formatter('%(levelname)-8s: %(message)s #[%(asctime)s %(filename)s:%(lineno)d %(funcName)s]')
 
         # Create a handler for the file
         self.file_handler = logging.FileHandler(self.log_file, mode='w')
