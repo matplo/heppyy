@@ -61,6 +61,11 @@ def add_standard_pythia_args(parser):
 	parser.add_argument('--py-cmnd-out', help="write pythia cmnd file", required=False, default='Pythia8.cmnd')
 	parser.add_argument('--py-vincia', help="select parton shower vincia", default=False, action='store_true')
 	parser.add_argument('--py-dire', help="select parton shower dire", default=False, action='store_true')
+	parser.add_argument('--py-monash', help="select tune", default=False, action='store_true')
+ 
+	parser.add_argument('--py-charm-mass', help="set charm mass to a value", default=-1, type=float)
+	parser.add_argument('--py-beauty-mass', help="set beauty mass to a value", default=-1, type=float)
+ 
 	# legacy support
 	parser.add_argument('--nev', help='number of events', default=1, type=int)
 
@@ -271,6 +276,12 @@ def pythia_config_from_args(args):
 	if args.py_hardQCDcharm:
 		sconfig_pythia.append("HardQCD:hardccbar=on")
 		procsel += 1
+  
+	if args.py_charm_mass >= 0:
+		sconfig_pythia.append(f'4:m0 = {args.py_charm_mass}')
+
+	if args.py_beauty_mass >= 0:
+		sconfig_pythia.append(f'5:m0 = {args.py_beauty_mass}')
 
 	if args.py_hardQCDbeauty:
 		sconfig_pythia.append("HardQCD:hardbbbar=on")
@@ -289,6 +300,9 @@ def pythia_config_from_args(args):
 	if args.py_dire and args.py_vincia:
 		print("[e] both Vincia and Dire requested - not supported")
 		return None
+
+	if args.py_monash:
+		sconfig_pythia.append("Tune:pp = 14")
 
 	if args.py_PbPb:
 		# from main113.cc
