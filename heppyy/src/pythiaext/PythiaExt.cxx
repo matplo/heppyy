@@ -6,4 +6,9 @@ namespace Pythia8
 	{
 		return p.info;
 	}
+
+	const HIInfo *getHIInfo(const Pythia &p)
+	{
+		return p.info.hiInfo;
+	}
 }
