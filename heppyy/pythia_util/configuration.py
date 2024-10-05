@@ -1,7 +1,5 @@
-import cppyy
-import heppyy.util.pythia8_cppyy
-from cppyy.gbl import Pythia8
-
+import heppyy
+Pythia8 = heppyy.load_cppyy('pythia8.Pythia8')
 
 def create_and_init_pythia(config_strings=[]):
 	pythia = Pythia8.Pythia()
