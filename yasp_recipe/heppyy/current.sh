@@ -26,6 +26,9 @@ ln -sv {{heppyy_dir}}/heppyy {{prefix}}/lib
 
 mkdir -p {{prefix}}/bin
 
+mkdir -p {{prefix}}/share
+ln -sv {{heppyy_dir}}/heppyy/cmake {{prefix}}/share
+
 recipe_file={{yasp.recipe_file}}
 this_recipe_name={{yasp.recipe}}
 current_dir={{yasp.current_dir}}
