@@ -5,23 +5,13 @@ import tqdm
 import argparse
 import os
 import numpy as np
-import sys
-import yasp
-import cppyy
-
-import heppyy.util.fastjet_cppyy
-import heppyy.util.pythia8_cppyy
-import heppyy.util.heppyy_cppyy
-
-from cppyy.gbl import fastjet as fj
-from cppyy.gbl import Pythia8
-from cppyy.gbl.std import vector
-
-# from cppyy.gbl import pythiaext
-
+import heppyy
 from heppyy.pythia_util import configuration as pyconf
 
-print(cppyy.gbl.__dict__)
+_ = heppyy.load_cppyy('heppyy')
+Pythia8 = heppyy.load_cppyy('pythia8.Pythia8')
+fj = heppyy.load_cppyy('fastjet')
+std = heppyy.load_cppyy('std')
 
 def main():
 	parser = argparse.ArgumentParser(description='pythia8 fastjet on the fly', prog=os.path.basename(__file__))
@@ -57,8 +47,8 @@ def main():
 	for i in tqdm.tqdm(range(args.nev)):
 		if not pythia.next():
 			continue
-		parts = vector[fj.PseudoJet]([fj.PseudoJet(p.px(), p.py(), p.pz(), p.e()) for p in pythia.event if p.isFinal()])
-		# parts = pythiafjext.vectorize(pythia, True, -1, 1, False)
+		parts = std.vector[fj.PseudoJet]([fj.PseudoJet(p.px(), p.py(), p.pz(), p.e()) for p in pythia.event if p.isFinal()])
+		# parts = pythiafjext.std.vectorize(pythia, True, -1, 1, False)
 		jets = jet_selector(jet_def(parts))
 		print(f'number of jets: {len(jets)} from n parts: {len(parts)}')
 		# pythiafjtools.pythia_fastjet_test(pythia)

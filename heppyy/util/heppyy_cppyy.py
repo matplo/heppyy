@@ -7,6 +7,7 @@ headers = [
 	"fjext/fjtools.hh",
 	"groom/GroomerShop.hh",
 	"pythiaext/PythiaExt.hh",
+	"pythiafjext/pyfjtools.hh",
 	"hybridutil/readhybrid.hh",
 	"hybridutil/hybridNegaRecombiner.hh"
  ]
