@@ -13,6 +13,14 @@ heppyy_settings = HeppyySettings(path=os.path.dirname(os.path.abspath(__file__))
 import importlib
 from yasp.cppyyhelper import YaspCppyyHelper
 
+# make sure numpy is present in the include path
+import numpy as np
+# Find the NumPy include directory
+numpy_include_dir = np.get_include()
+import cppyy
+# Add the NumPy include directory to cppyy
+cppyy.add_include_path(numpy_include_dir)
+
 def load_cppyy(name='heppyy', verbose=False):
   _split = name.split('.')
   if len(_split) == 1:
