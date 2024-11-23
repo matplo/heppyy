@@ -21,7 +21,7 @@ import cppyy
 # Add the NumPy include directory to cppyy
 cppyy.add_include_path(numpy_include_dir)
 
-def load_cppyy(name='heppyy', verbose=False):
+def load_cppyy(name='heppyy', verbose=False, force=False):
   _split = name.split('.')
   if len(_split) == 1:
     sname = _split[0]
@@ -36,7 +36,12 @@ def load_cppyy(name='heppyy', verbose=False):
     snamespace = sname
   symbol = YaspCppyyHelper().get(snamespace, verbose=verbose)
   if symbol is not None:
-    return symbol
+    if verbose:
+      print('[i] Found symbol:', symbol)
+    if force is True:
+      print('[i] Reloading symbol:', symbol)
+    else:
+      return symbol
   # otherwise try to load the module / helper
   _loaded = False
   _errors = []
@@ -59,11 +64,13 @@ def load_cppyy(name='heppyy', verbose=False):
     try:
       mname = f'{sname}'
       # check if already loaded
-      if mname in sys.modules:
+      if force is False and mname in sys.modules:
         if verbose:
           print(f"[i] {mname} already loaded")
         pass
       else:
+        if verbose:
+          print(f"[i] trying to load {mname} with importlib")
         importlib.import_module(mname)
         if verbose:
           print(f"[i] {mname} loaded with importlib")
