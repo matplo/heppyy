@@ -28,9 +28,9 @@ import array
 import eech
 
 def logbins(xmin, xmax, nbins):
-        lspace = np.logspace(np.log10(xmin), np.log10(xmax), nbins+1)
-        arr = array.array('f', lspace)
-        return arr
+				lspace = np.logspace(np.log10(xmin), np.log10(xmax), nbins+1)
+				arr = array.array('f', lspace)
+				return arr
 
 
 def find_jets_pythia(jet_def, jet_selector, pythia):
@@ -79,6 +79,9 @@ def main():
 		print("[e] pythia initialization failed.")
 		return
 
+	soft_drop = fj.contrib.SoftDrop(0, 0.1)
+	ca_def = fj.JetDefinition(fj.cambridge_algorithm, 1.0)
+
 	_stop = False 
 	pbar = tqdm.tqdm(range(args.nev))
 	njets = 0
@@ -95,7 +98,15 @@ def main():
 		ev_weight = _info.weight()
 		if jets.size() > 0:
 			for j in jets:
-				h.fill_jet(j, j.constituents(), j.perp(), sigmaGen=sigmaGen, weight=ev_weight)
+				ca_cs = fj.ClusterSequence(j.constituents(), ca_def)
+				ca_jet = ca_cs.inclusive_jets()[0]
+				groomed_jet = soft_drop.result(ca_jet)
+				grsd = fj.contrib.get_SD_jet_info(groomed_jet)
+				delta_R = grsd.dR
+				zg = grsd.zg
+				# print('delta R:', delta_R)
+
+				# h.fill_jet(j, j.constituents(), j.perp(), sigmaGen=sigmaGen, weight=ev_weight)
 		else:
 			continue
 		pbar.update(jets.size())
