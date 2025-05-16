@@ -1,10 +1,12 @@
 import heppyy
 Pythia8 = heppyy.load_cppyy('pythia8.Pythia8')
 
-def create_and_init_pythia(config_strings=[]):
+def create_and_init_pythia(config_strings=[], cmnd_file=None):
 	pythia = Pythia8.Pythia()
 	extra_s = ["Next:numberCount = 0", "Next:numberShowEvent = 0", "Next:numberShowInfo = 0", "Next:numberShowProcess = 0", "Stat:showProcessLevel = on"]
 	config_strings.extend(extra_s)
+	if cmnd_file:
+		pythia.readFile(cmnd_file)
 	for s in config_strings:
 		pythia.readString(s)
 	print("[i] strings read to PYTHIA ", [config_strings])
