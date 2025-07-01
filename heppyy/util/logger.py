@@ -12,29 +12,34 @@ class Logger:
             cls._instance._initialized = False
         return cls._instance
 
-    def __init__(self, log_file='heppyy.log', level=logging.INFO, console=True):
+    def __init__(self, log_file=None, level=logging.INFO, console=True):
         if self._initialized:
             return
         self._initialized = True
         self.level = level
         self.console = console
 
-        # Include the PID in the log filename
-        self.log_file = f"{os.path.splitext(log_file)[0]}_{os.getpid()}{os.path.splitext(log_file)[1]}"
-
         # Create a formatter
         # formatter = logging.Formatter('%(asctime)s name=%(name)-12s level=%(levelname)-8s module=%(module)s func=%(funcName)s: %(message)s')
         self.formatter = logging.Formatter('%(levelname)-8s: %(message)s #[%(asctime)s %(filename)s:%(lineno)d %(funcName)s]')
 
-        # Create a handler for the file
-        self.file_handler = logging.FileHandler(self.log_file, mode='w')
-        self.file_handler.setLevel(self.level)
-        self.file_handler.setFormatter(self.formatter)
-
         # Create a logger
         self.logger = logging.getLogger()
         self.logger.setLevel(self.level)
-        self.logger.addHandler(self.file_handler)
+
+        # Only create file handler if log_file is specified
+        if log_file is not None:
+            # Include the PID in the log filename
+            self.log_file = f"{os.path.splitext(log_file)[0]}_{os.getpid()}{os.path.splitext(log_file)[1]}"
+            
+            # Create a handler for the file
+            self.file_handler = logging.FileHandler(self.log_file, mode='w')
+            self.file_handler.setLevel(self.level)
+            self.file_handler.setFormatter(self.formatter)
+            self.logger.addHandler(self.file_handler)
+        else:
+            self.log_file = None
+            self.file_handler = None
 
         # If console is True, create a handler for the console
         if self.console:
@@ -42,7 +47,8 @@ class Logger:
 
     def set_formatter_string(self, s):
         self.formatter = logging.Formatter(s)
-        self.file_handler.setFormatter(self.formatter)
+        if self.file_handler is not None:
+            self.file_handler.setFormatter(self.formatter)
         if hasattr(self, 'console_handler'):
             self.console_handler.setFormatter(self.formatter)
             
@@ -73,7 +79,8 @@ class Logger:
     def set_level(self, level):
         self.level = level
         self.logger.setLevel(self.level)
-        self.file_handler.setLevel(self.level)
+        if self.file_handler is not None:
+            self.file_handler.setLevel(self.level)
         if hasattr(self, 'console_handler'):
           self.console_handler.setLevel(self.level)
 
