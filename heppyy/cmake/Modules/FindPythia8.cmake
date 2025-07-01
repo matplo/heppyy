@@ -44,7 +44,7 @@ FIND_PACKAGE_HANDLE_STANDARD_ARGS(Pythia8 DEFAULT_MSG PYTHIA8_DIR PYTHIA8_INCLUD
 if(NOT PYTHIA8_FOUND)
   message(STATUS "${Yellow}Pythia8 not found - some of the functionality will be missing.${ColourReset}")
 elseif(PYTHIA8_FOUND)
-  message(STATUS "Found Pythia8: ${PYTHIA8_DIR}")
+  message(STATUS "Pythia8 @: ${PYTHIA8_DIR}")
   message(STATUS "Pythia8 include directory: ${PYTHIA8_INCLUDE_DIR}")
   message(STATUS "Pythia8 libraries: ${PYTHIA8_LIBRARIES}")
   message(STATUS "Pythia8 cxxflags: ${PYTHIA8_CXXFLAGS}")
