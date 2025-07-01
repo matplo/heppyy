@@ -13,6 +13,9 @@ def create_and_init_pythia(config_strings=[], cmnd_file=None):
 	if pythia.init():
 		print ('[i] pythia initialized with', config_strings)
 		return pythia
+	else:
+		print("[e] pythia initialization failed with", config_strings)
+		pythia.settings.listChanged()
 	return None
 
 
@@ -331,11 +334,11 @@ def pythia_config_from_args(args):
 		if args.py_PbPb is False:
 			args.py_bias = True;
 	else:
-		if 'PhaseSpace:pTHatMin' not in ' '.join(sconfig_pythia):
-			sconfig_pythia.append("PhaseSpace:pTHatMin = {}".format(args.py_pthatmin))
-
-	if 'PhaseSpace:pTHatMax' not in ' '.join(sconfig_pythia):
-		sconfig_pythia.append("PhaseSpace:pTHatMax = {}".format(args.py_pthatmax))
+		if args.py_cmnd is None:
+			if 'PhaseSpace:pTHatMin' not in ' '.join(sconfig_pythia):
+				sconfig_pythia.append("PhaseSpace:pTHatMin = {}".format(args.py_pthatmin))
+			if 'PhaseSpace:pTHatMax' not in ' '.join(sconfig_pythia):
+				sconfig_pythia.append("PhaseSpace:pTHatMax = {}".format(args.py_pthatmax))
 
 	if args.py_bias:
 		_extra = [	"PhaseSpace:bias2Selection=on",
