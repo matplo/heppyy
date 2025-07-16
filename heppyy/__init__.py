@@ -50,12 +50,12 @@ def load_cppyy(name='heppyy', verbose=False, force=False):
     # check if already loaded
     if mname in sys.modules:
       if verbose:
-        print(f"[i] {mname} already loaded")
+        print(f"[heppyy-i] {mname} already loaded")
       pass
     else:
       importlib.import_module(mname)
       if verbose:
-        print(f"[i] {mname} loaded with importlib")
+        print(f"[heppyy-i] {mname} loaded with importlib")
       _loaded = True
   except ImportError as e:
     _errors.append(f"[e] util load try - {e}")
@@ -66,14 +66,14 @@ def load_cppyy(name='heppyy', verbose=False, force=False):
       # check if already loaded
       if force is False and mname in sys.modules:
         if verbose:
-          print(f"[i] {mname} already loaded")
+          print(f"[heppyy-i] {mname} already loaded")
         pass
       else:
         if verbose:
-          print(f"[i] trying to load {mname} with importlib")
+          print(f"[heppyy-i] trying to load {mname} with importlib")
         importlib.import_module(mname)
         if verbose:
-          print(f"[i] {mname} loaded with importlib")
+          print(f"[heppyy-i] {mname} loaded with importlib")
         _loaded = True
     except ImportError as e:
       _errors.append(f"[e] direct load try - {e}")

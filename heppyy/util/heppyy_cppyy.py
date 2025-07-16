@@ -14,6 +14,9 @@ headers = [
 packs = ['heppyy']
 libs = ['heppyy_eec', 'heppyy_fjutil', 'heppyy_fjext', 'heppyy_groom', 'heppyy_pythiafjext', 'heppyy_pythiaext', 'heppyy_hybridutil']
 
+if yasp.debug:
+	print('[heppyy-i] Loading cppyy with packages:', packs, 'libs:', libs, 'headers:', headers)
+
 from yasp.cppyyhelper import YaspCppyyHelper
 YaspCppyyHelper().load(packs, libs, headers)
 if yasp.debug:
