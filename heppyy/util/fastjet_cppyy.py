@@ -29,9 +29,13 @@ headers = [
 packs = ['fastjet']
 libs = ['fastjet', 'LundPlane', 'EnergyCorrelator', 'ConstituentSubtractor']
 
+import sys
 from yasp.cppyyhelper import YaspCppyyHelper
+if yasp.debug:
+	print('[heppyy-i] calling YaspCppyyHelper().load:', YaspCppyyHelper().load, file=sys.stderr)
 YaspCppyyHelper().load(packs, libs, headers)
 if yasp.debug:
-	print('[heppyy-i] cppyy loaded packages:', YaspCppyyHelper().loaded_packages)
-	print('[heppyy-i] cppyy loaded libs:', YaspCppyyHelper().loaded_libs)
-	print(YaspCppyyHelper())
+	print(YaspCppyyHelper(), file=sys.stderr)
+	print('[heppyy-i] cppyy loaded packages:', YaspCppyyHelper().loaded_packages, file=sys.stderr)
+	print('[heppyy-i] cppyy loaded libs:', YaspCppyyHelper().loaded_libs, file=sys.stderr)
+	print(YaspCppyyHelper(), file=sys.stderr)

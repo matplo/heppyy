@@ -34,12 +34,14 @@ def load_cppyy(name='heppyy', verbose=False, force=False):
     snamespace = _split[-1]  
   if snamespace is None:
     snamespace = sname
+  if verbose:
+    print(f"[heppyy-i] loading cppyy for {sname} in namespace {snamespace}", file=sys.stderr)
   symbol = YaspCppyyHelper().get(snamespace, verbose=verbose)
   if symbol is not None:
     if verbose:
-      print('[i] Found symbol:', symbol)
+      print('[heppyy-i] found symbol:', symbol, file=sys.stderr)
     if force is True:
-      print('[i] Reloading symbol:', symbol)
+      print('[heppyy-i] reloading symbol:', symbol, file=sys.stderr)
     else:
       return symbol
   # otherwise try to load the module / helper
@@ -50,15 +52,16 @@ def load_cppyy(name='heppyy', verbose=False, force=False):
     # check if already loaded
     if mname in sys.modules:
       if verbose:
-        print(f"[heppyy-i] {mname} already loaded")
+        print(f"[heppyy-i] {mname} already loaded", file=sys.stderr)
       pass
     else:
       importlib.import_module(mname)
       if verbose:
-        print(f"[heppyy-i] {mname} loaded with importlib")
+        print(f"[heppyy-i] {mname} loaded with importlib", file=sys.stderr)
       _loaded = True
   except ImportError as e:
-    _errors.append(f"[e] util load try - {e}")
+    _errors.append(f"[heppyy-e] util load try {mname} with importlib - {e}")
+    print(f"[heppyy-e] util load try {mname} with importlib - {e}", file=sys.stderr)
     _loaded = False
   if not _loaded:
     try:
@@ -66,19 +69,20 @@ def load_cppyy(name='heppyy', verbose=False, force=False):
       # check if already loaded
       if force is False and mname in sys.modules:
         if verbose:
-          print(f"[heppyy-i] {mname} already loaded")
+          print(f"[heppyy-i] {mname} already loaded", file=sys.stderr)
         pass
       else:
         if verbose:
-          print(f"[heppyy-i] trying to load {mname} with importlib")
+          print(f"[heppyy-i] trying to load {mname} with importlib", file=sys.stderr)
         importlib.import_module(mname)
         if verbose:
           print(f"[heppyy-i] {mname} loaded with importlib")
         _loaded = True
     except ImportError as e:
-      _errors.append(f"[e] direct load try - {e}")
+      _errors.append(f"[heppyy-e] direct load try with importlib - {e}")
+      print(f"[heppyy-e] direct load try with importlib - {e}", file=sys.stderr)
       _loaded = False
   if not _loaded:
     if verbose:
-      print('\n'.join(_errors))
+      print('\n'.join(_errors), file=sys.stderr)
   return YaspCppyyHelper().get(snamespace, verbose=verbose)
