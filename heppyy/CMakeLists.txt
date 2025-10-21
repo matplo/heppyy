@@ -12,7 +12,10 @@ endif(POLICY CMP0076)
 if(POLICY CMP0078)
   cmake_policy(SET CMP0078 NEW)
 endif(POLICY CMP0078)
-
+# Python: use LOCATION to identify Python (for building inside venvs).
+if(POLICY CMP0094)
+  cmake_policy(SET CMP0094 NEW)
+endif()
 if(POLICY CMP0144)
   cmake_policy(SET CMP0144 OLD)
 endif(POLICY CMP0144)
