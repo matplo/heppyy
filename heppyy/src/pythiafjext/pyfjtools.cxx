@@ -38,7 +38,7 @@ namespace pythiafjtools{
         {
             if (abs(pythia.event[ip].id()) == require_pid)
             {
-                if (daughters_size != -1 && pythia.event[ip].daughterList().size() != daughters_size) continue;
+                if (daughters_size != -1 && static_cast<int>(pythia.event[ip].daughterList().size()) != daughters_size) continue;
                 pid_found = true;
                 satisfier_ip = ip;
                 break;
@@ -86,20 +86,22 @@ namespace pythiafjtools{
 	{
 		std::vector<fastjet::PseudoJet> v;
 		std::bitset<kMaxSetting> mask(0); // no particle accepted
-		std::bitset<kMaxSetting> negmask(0); // no particle accepted
-		negmask.flip();
-		int nsel = selection.size();
-		for (unsigned int i = 0; i < nsel; i++)
+		// std::bitset<kMaxSetting> negmask(0); // no particle accepted
+		// negmask.flip();
+		// int nsel = selection.size();
+		// for (unsigned int i = 0; i < nsel; i++)
+		for (const auto sel: selection)
 		{
-			if (selection[i] > 0)
+			if (sel > 0)
 			{
-				mask[selection[i]] = true;
+				mask[sel] = true;
 			}
-			else
-			{
-				negmask[abs(selection[i])] = false;
-			}
+			// else
+			// {
+			// 	negmask[abs(sel)] = false;
+			// }
 		}
+		std::bitset<kMaxSetting> negmask = ~mask;
 		for (int ip = 0; ip < pythia.event.size(); ip++)
 		{
 			std::bitset<kMaxSetting> pmask(0);
@@ -126,8 +128,8 @@ namespace pythiafjtools{
 			{
 				switch(i)
 				{
-					case kIgnore:		pmask[i] = true;
-					case kAny: 			pmask[i] = true; 							break;
+					case kIgnore:		pmask[i] = true; [[fallthrough]];
+					case kAny: 			pmask[i] = true;							break;
 					case kFinal: 		pmask[i] = pythia.event[ip].isFinal(); 		break;
 					case kCharged: 		pmask[i] = pythia.event[ip].isCharged(); 	break;
 					case kNeutral: 		pmask[i] = pythia.event[ip].isNeutral(); 	break;
@@ -187,23 +189,25 @@ namespace pythiafjtools{
 		std::vector<int> saved_indices; // indices of particles saved to vector v
 		std::vector<int> indices_to_check; // indices of kaons/pions that should not be saved to vector v
 		bool D0found = false;
-		int d0notfound_ctr = 0;
+		// int d0notfound_ctr = 0;
 
 		std::bitset<kMaxSetting> mask(0); // no particle accepted
-		std::bitset<kMaxSetting> negmask(0); // no particle accepted
-		negmask.flip();
-		int nsel = selection.size();
-		for (unsigned int i = 0; i < nsel; i++)
+		// std::bitset<kMaxSetting> negmask(0); // no particle accepted
+		// negmask.flip();
+		// int nsel = selection.size();
+		// for (unsigned int i = 0; i < nsel; i++)
+		for (const auto sel: selection)
 		{
-			if (selection[i] > 0)
+			if (sel > 0)
 			{
-				mask[selection[i]] = true;
+				mask[sel] = true;
 			}
-			else
-			{
-				negmask[abs(selection[i])] = false;
-			}
+			// else
+			// {
+			// 	negmask[abs(sel)] = false;
+			// }
 		}
+		std::bitset<kMaxSetting> negmask = ~mask;
 		for (int ip = 0; ip < pythia.event.size(); ip++)
 		{
 			std::bitset<kMaxSetting> pmask(0);
@@ -212,8 +216,8 @@ namespace pythiafjtools{
 			{
 				switch(i)
 				{
-					case kIgnore:		pmask[i] = true;
-					case kAny: 			pmask[i] = true; 							break;
+					case kIgnore:		pmask[i] = true; [[fallthrough]];
+					case kAny: 			pmask[i] = true;							break;
 					case kFinal: 		pmask[i] = pythia.event[ip].isFinal(); 		break;
 					case kCharged: 		pmask[i] = pythia.event[ip].isCharged(); 	break;
 					case kNeutral: 		pmask[i] = pythia.event[ip].isNeutral(); 	break;
@@ -229,7 +233,7 @@ namespace pythiafjtools{
 					// case kD0:			pmask[i] = (pythia.event[ip].idAbs() == 421); break;
 				}
 			}
-			bool accept = ((mask & pmask) == mask) && ((negmask & pmask) == pmask) || pythia.event[ip].idAbs() == 421;
+			bool accept = (((mask & pmask) == mask) && ((negmask & pmask) == pmask)) || pythia.event[ip].idAbs() == 421;
 			// if (accept)
 			// 	std::cout << "[+] ";
 			// else
@@ -431,7 +435,7 @@ namespace pythiafjtools{
 		// remove the kaon and pion
 		std::vector<int> ind_to_rem;
 		int ctr = 0;
-		for (int i=0; i<v.size(); i++) {
+		for (auto i = 0; i < v.size(); i++) {
 			if (v[i].user_index() == dau1index || v[i].user_index() == dau2index){
 				ind_to_rem.push_back(i);
 				ctr++;
