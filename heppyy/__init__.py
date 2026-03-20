@@ -1,6 +1,29 @@
 import sys
 import os
 
+# On macOS, libcppyy_backend.so has @rpath/libCore.so as a dependency but
+# no LC_RPATH entry, so dyld can't resolve it unless libCore.so is already
+# loaded. Pre-load ROOT core libs by full path before cppyy is imported.
+def _preload_root_cppyy_libs():
+    if sys.platform != 'darwin':
+        return
+    import ctypes
+    import subprocess
+    try:
+        root_lib_dir = subprocess.check_output(
+            ['root-config', '--libdir'], text=True).strip()
+    except Exception:
+        return
+    for lib in ['libCore.so', 'libcppyy_backend.so']:
+        lib_path = os.path.join(root_lib_dir, lib)
+        if os.path.isfile(lib_path):
+            try:
+                ctypes.CDLL(lib_path, ctypes.RTLD_GLOBAL)
+            except OSError:
+                pass
+
+_preload_root_cppyy_libs()
+
 from yasp import GenericObject
 
 class HeppyySettings(GenericObject):
