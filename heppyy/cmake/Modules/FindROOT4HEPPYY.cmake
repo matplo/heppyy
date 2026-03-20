@@ -75,11 +75,15 @@ if (ROOT_FOUND)
         #execute_process(  COMMAND ${Python3_EXECUTABLE} -c "import sys; sys.path.append('${ROOT_PYTHON_SUBDIR}'); import ROOT; ROOT.gROOT.SetBatch(True); print('[i] ROOT version from within python:',ROOT.gROOT.GetVersion());" 
         set(TESTCMND "import ROOT\; ROOT.gROOT.SetBatch(True)\; print('[i] ROOT version from within python:',ROOT.gROOT.GetVersion())\;")
         message(STATUS "Test command: ${Python_EXECUTABLE} -c ${TESTCMND}")
-        execute_process(  COMMAND ${Python_EXECUTABLE} -c ${TESTCMND}
-                          WORKING_DIRECTORY /tmp 
-                          RESULT_VARIABLE LOAD_ROOT_PYTHON_RESULT 
-                          OUTPUT_VARIABLE LOAD_ROOT_PYTHON 
-                          ERROR_VARIABLE LOAD_ROOT_PYTHON_ERROR 
+        execute_process(  COMMAND ${CMAKE_COMMAND} -E env
+                          "DYLD_LIBRARY_PATH=${ROOT_LIBRARY_DIR}:${ROOT_LIBRARY_DIR}/cppyy_backend:$ENV{DYLD_LIBRARY_PATH}"
+                          "LD_LIBRARY_PATH=${ROOT_LIBRARY_DIR}:${ROOT_LIBRARY_DIR}/cppyy_backend:$ENV{LD_LIBRARY_PATH}"
+                          "PYTHONPATH=${ROOT_LIBRARY_DIR}:$ENV{PYTHONPATH}"
+                          ${Python_EXECUTABLE} -c ${TESTCMND}
+                          WORKING_DIRECTORY /tmp
+                          RESULT_VARIABLE LOAD_ROOT_PYTHON_RESULT
+                          OUTPUT_VARIABLE LOAD_ROOT_PYTHON
+                          ERROR_VARIABLE LOAD_ROOT_PYTHON_ERROR
                           OUTPUT_STRIP_TRAILING_WHITESPACE )
         # execute_process(  COMMAND ${CMAKE_HEPPY_DIR}/external/root/test_root.sh ${ROOT_LIBRARY_DIR} ${Python_EXECUTABLE}
         #                   WORKING_DIRECTORY /tmp 
